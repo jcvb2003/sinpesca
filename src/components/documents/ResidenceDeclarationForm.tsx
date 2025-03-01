@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +8,7 @@ import { useEffect } from "react";
 import { members } from "@/data/mockMembers";
 
 interface ResidenceDeclarationFormProps {
-  memberId?: number;
+  memberId?: string | null;
 }
 
 export function ResidenceDeclarationForm({ memberId }: ResidenceDeclarationFormProps) {

@@ -17,7 +17,7 @@ const Documents = () => {
   const navigate = useNavigate();
   
   const memberData = memberId 
-    ? members.find(m => m.id === parseInt(memberId, 10)) 
+    ? members.find(m => m.id === memberId) 
     : null;
 
   useEffect(() => {
@@ -77,15 +77,15 @@ const Documents = () => {
             </TabsList>
             
             <TabsContent value="inss" className="mt-4">
-              <INSSRequestForm memberId={memberId ? parseInt(memberId, 10) : undefined} />
+              <INSSRequestForm memberId={memberId} />
             </TabsContent>
             
             <TabsContent value="residence" className="mt-4">
-              <ResidenceDeclarationForm memberId={memberId ? parseInt(memberId, 10) : undefined} />
+              <ResidenceDeclarationForm memberId={memberId} />
             </TabsContent>
             
             <TabsContent value="representation" className="mt-4">
-              <RepresentationTermForm memberId={memberId ? parseInt(memberId, 10) : undefined} />
+              <RepresentationTermForm memberId={memberId} />
             </TabsContent>
           </Tabs>
         </div>
