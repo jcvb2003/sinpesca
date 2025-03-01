@@ -18,11 +18,6 @@ interface SidebarItem {
 
 const items: SidebarItem[] = [
   {
-    title: "Sócios",
-    path: "/",
-    icon: Users,
-  },
-  {
     title: "Cadastro",
     path: "/register",
     icon: UserPlus,
@@ -41,10 +36,7 @@ const items: SidebarItem[] = [
     title: "Relatórios",
     path: "/reports",
     icon: BarChart3,
-    submenu: [
-      { title: "Sócios", path: "/reports/associates" },
-      { title: "Requerimentos", path: "/reports/requirements" },
-    ],
+    submenu: [], //Removed Sócios and Requerimentos
   },
 ];
 
@@ -84,39 +76,39 @@ export function AppSidebar() {
 
       <div className="flex flex-col gap-1 p-2">
         {items.map((item) => (
-          <React.Fragment key={item.path}>
-            <Link
-              to={item.path}
-              className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                (location.pathname === item.path || (item.submenu && item.submenu.some(subItem => location.pathname === subItem.path)))
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              )}
-            >
-              <item.icon className="h-4 w-4" />
-              {!collapsed && <span>{item.title}</span>}
-            </Link>
+              <div key={item.path}> {/* Replaced React.Fragment with div */}
+                <Link
+                  to={item.path}
+                  className={cn(
+                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                    (location.pathname === item.path || (item.submenu && item.submenu.some(subItem => location.pathname === subItem.path)))
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  )}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {!collapsed && <span>{item.title}</span>}
+                </Link>
 
-            {!collapsed && item.submenu && (
-              <div className="ml-7 mt-1 space-y-1">
-                {item.submenu.map((subItem) => (
-                  <Link
-                    key={subItem.path}
-                    to={subItem.path}
-                    className={cn(
-                      "block rounded-md px-3 py-1.5 text-sm transition-colors",
-                      location.pathname === subItem.path
-                        ? "bg-accent/50 text-accent-foreground"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
-                    )}
-                  >
-                    {subItem.title}
-                  </Link>
-                ))}
+                {!collapsed && item.submenu && (
+                  <div className="ml-7 mt-1 space-y-1">
+                    {item.submenu.map((subItem) => (
+                      <Link
+                        key={subItem.path}
+                        to={subItem.path}
+                        className={cn(
+                          "block rounded-md px-3 py-1.5 text-sm transition-colors",
+                          location.pathname === subItem.path
+                            ? "bg-accent/50 text-accent-foreground"
+                            : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                        )}
+                      >
+                        {subItem.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </React.Fragment>
         ))}
       </div>
     </div>
