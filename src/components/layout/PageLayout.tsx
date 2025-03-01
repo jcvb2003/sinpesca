@@ -39,7 +39,7 @@ export function PageLayout({ children }: PageLayoutProps) {
   return (
     <div className="min-h-screen flex">
       <AppSidebar />
-      <div className={`flex-1 transition-all duration-300 ${sidebarWidth === "w-16" ? "ml-16" : "ml-64"} p-8`}>
+      <div className={`flex-1 transition-all duration-300 ${sidebarWidth === "w-16" ? "ml-16" : "ml-64"} p-4`}>
         {children}
       </div>
     </div>

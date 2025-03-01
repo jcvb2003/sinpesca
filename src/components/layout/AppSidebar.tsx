@@ -18,6 +18,11 @@ interface SidebarItem {
 
 const items: SidebarItem[] = [
   {
+    title: "Sócios",
+    path: "/",
+    icon: Users,
+  },
+  {
     title: "Cadastro",
     path: "/register",
     icon: UserPlus,
@@ -54,7 +59,6 @@ export function AppSidebar() {
         "fixed left-0 top-0 z-40 h-full transition-all duration-300 ease-in-out bg-white border-r border-gray-200",
         collapsed ? "w-16" : "w-64"
       )}
-      style={{ position: 'relative' }}
     >
       <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
         <h1 
