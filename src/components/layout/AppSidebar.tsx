@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus, FileText, Settings, Menu, X } from "lucide-react";
+import { Users, UserPlus, Settings, Menu, X } from "lucide-react";
 
 interface SidebarItem {
   title: string;
@@ -21,11 +21,6 @@ const items: SidebarItem[] = [
     title: "Cadastro",
     path: "/register",
     icon: UserPlus,
-  },
-  {
-    title: "Documentos",
-    path: "/documents",
-    icon: FileText,
   },
   {
     title: "Configurações",

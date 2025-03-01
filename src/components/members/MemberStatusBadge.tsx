@@ -18,37 +18,43 @@ export function MemberStatusBadge({
     switch (status) {
       case "active":
         return {
-          icon: <CheckCircle className="text-primary" size={18} />,
+          icon: <CheckCircle className="text-green-600" size={18} />,
           label: "Ativo",
-          color: "text-primary"
+          color: "text-green-600",
+          bgColor: "bg-green-50"
         };
       case "inactive":
         return {
-          icon: <XCircle className="text-gray-400" size={18} />,
+          icon: <XCircle className="text-gray-500" size={18} />,
           label: "Inativo",
-          color: "text-gray-500"
+          color: "text-gray-500",
+          bgColor: "bg-gray-50"
         };
       case "suspended":
         return {
           icon: <XCircle className="text-red-500" size={18} />,
           label: "Suspenso",
-          color: "text-red-500"
+          color: "text-red-500",
+          bgColor: "bg-red-50"
         };
       default:
         return {
-          icon: <XCircle className="text-gray-400" size={18} />,
+          icon: <XCircle className="text-gray-500" size={18} />,
           label: "Desconhecido",
-          color: "text-gray-500"
+          color: "text-gray-500",
+          bgColor: "bg-gray-50"
         };
     }
   };
 
-  const { icon, label, color } = getStatusInfo();
+  const { icon, label, color, bgColor } = getStatusInfo();
 
   return (
     <div className={cn("flex items-center gap-1.5", className)}>
-      {icon}
-      {showLabel && <span className={cn("text-sm font-medium", color)}>{label}</span>}
+      <div className={cn("px-3 py-1.5 rounded-md flex items-center gap-1.5", bgColor)}>
+        {icon}
+        {showLabel && <span className={cn("text-sm font-medium", color)}>{label}</span>}
+      </div>
     </div>
   );
 }

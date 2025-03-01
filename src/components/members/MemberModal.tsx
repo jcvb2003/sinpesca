@@ -1,9 +1,9 @@
 
-import { Member } from "@/types/member";
-import { MemberStatusBadge } from "./MemberStatusBadge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { FileText, Pencil, Trash2, X } from "lucide-react";
+import { FileText, Pencil, Trash2 } from "lucide-react";
+import { Member } from "@/types/member";
+import { MemberStatusBadge } from "./MemberStatusBadge";
 
 interface MemberModalProps {
   member: Member;
@@ -12,177 +12,144 @@ interface MemberModalProps {
   onAction: (action: string, member: Member) => void;
 }
 
-export function MemberModal({ 
-  member, 
-  isOpen, 
-  onClose,
-  onAction
-}: MemberModalProps) {
-  // Function to format date to PT-BR format
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("pt-BR");
-  };
-
+export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden bg-[#1e2132] text-white">
-        <DialogHeader className="p-6 flex flex-row justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="bg-primary w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
-              {member.fullName.charAt(0)}
-            </div>
-            <div>
-              <DialogTitle className="text-white">{member.fullName}</DialogTitle>
-              <p className="text-gray-300 text-sm mt-1">
-                {member.registrationNumber} 
-                {member.formerRegistrationNumber && ` (Antigo: ${member.formerRegistrationNumber})`}
-              </p>
-            </div>
-          </div>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={onClose}
-            className="text-gray-300 hover:text-white hover:bg-gray-700"
-          >
-            <X size={18} />
-          </Button>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold flex items-center gap-2">
+            {member.fullName}
+            <MemberStatusBadge status={member.status} className="ml-2" />
+          </DialogTitle>
         </DialogHeader>
         
-        <div className="grid grid-cols-2 gap-6 p-6">
+        <div className="space-y-6 py-4">
           <div>
-            <h3 className="text-primary uppercase text-sm font-medium mb-3">Informações Pessoais</h3>
-            <div className="space-y-2">
+            <h3 className="text-base font-medium text-gray-900 border-b pb-2">Informações Pessoais</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
               <div>
-                <p className="text-gray-300 text-xs">Nome Completo</p>
-                <p className="text-white">{member.fullName}</p>
+                <p className="text-sm font-medium text-gray-500">Nome completo</p>
+                <p className="text-sm">{member.fullName}</p>
               </div>
-              {member.birthDate && (
-                <div>
-                  <p className="text-gray-300 text-xs">Data de Nascimento</p>
-                  <p className="text-white">{formatDate(member.birthDate)}</p>
-                </div>
-              )}
-              {(member.fatherName || member.motherName) && (
-                <div>
-                  <p className="text-gray-300 text-xs">Filiação</p>
-                  <p className="text-white">{member.fatherName} e {member.motherName}</p>
-                </div>
-              )}
+              <div>
+                <p className="text-sm font-medium text-gray-500">Data de nascimento</p>
+                <p className="text-sm">{new Date(member.birthDate).toLocaleDateString("pt-BR")}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">CPF</p>
+                <p className="text-sm">{member.cpf}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">RG</p>
+                <p className="text-sm">{member.rg}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Nº Registro</p>
+                <p className="text-sm">{member.registrationNumber}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Registro antigo</p>
+                <p className="text-sm">{member.formerRegistrationNumber || "N/A"}</p>
+              </div>
             </div>
-            
-            <h3 className="text-primary uppercase text-sm font-medium mt-6 mb-3">Dados Profissionais</h3>
-            <div className="space-y-2">
-              {member.profession && (
-                <div>
-                  <p className="text-gray-300 text-xs">Profissão</p>
-                  <p className="text-white">{member.profession}</p>
-                </div>
-              )}
-              {member.workplace && (
-                <div>
-                  <p className="text-gray-300 text-xs">Local de Trabalho</p>
-                  <p className="text-white">{member.workplace}</p>
-                </div>
-              )}
-              {member.professionalEmail && (
-                <div>
-                  <p className="text-gray-300 text-xs">Email Profissional</p>
-                  <p className="text-white">{member.professionalEmail}</p>
-                </div>
-              )}
-            </div>
-            
-            <h3 className="text-primary uppercase text-sm font-medium mt-6 mb-3">Observações</h3>
-            <p className="text-white">{member.observations || "Nenhuma observação"}</p>
           </div>
           
           <div>
-            <h3 className="text-primary uppercase text-sm font-medium mb-3">Endereço</h3>
-            <div className="space-y-2">
-              {member.street && (
-                <div>
-                  <p className="text-gray-300 text-xs">Logradouro</p>
-                  <p className="text-white">{member.street}, {member.number}</p>
-                </div>
-              )}
-              {member.district && (
-                <div>
-                  <p className="text-gray-300 text-xs">Bairro</p>
-                  <p className="text-white">{member.district}</p>
-                </div>
-              )}
-              {(member.city || member.state_address) && (
-                <div>
-                  <p className="text-gray-300 text-xs">Cidade/Estado</p>
-                  <p className="text-white">{member.city}, {member.state_address}</p>
-                </div>
-              )}
-              {member.zipCode && (
-                <div>
-                  <p className="text-gray-300 text-xs">CEP</p>
-                  <p className="text-white">{member.zipCode}</p>
-                </div>
-              )}
-            </div>
-            
-            <h3 className="text-primary uppercase text-sm font-medium mt-6 mb-3">Contato</h3>
-            <div className="space-y-2">
-              {member.phone && (
-                <div>
-                  <p className="text-gray-300 text-xs">Telefone</p>
-                  <p className="text-white">{member.phone}</p>
-                </div>
-              )}
-              {member.email && (
-                <div>
-                  <p className="text-gray-300 text-xs">Email</p>
-                  <p className="text-white">{member.email}</p>
-                </div>
-              )}
-            </div>
-            
-            <h3 className="text-primary uppercase text-sm font-medium mt-6 mb-3">Status e Datas</h3>
-            <div className="space-y-2">
+            <h3 className="text-base font-medium text-gray-900 border-b pb-2">Dados Profissionais</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
               <div>
-                <p className="text-gray-300 text-xs">Status</p>
-                <MemberStatusBadge status={member.status} className="mt-1" />
+                <p className="text-sm font-medium text-gray-500">Profissão</p>
+                <p className="text-sm">{member.profession}</p>
               </div>
               <div>
-                <p className="text-gray-300 text-xs">Data de Adesão</p>
-                <p className="text-white">{formatDate(member.joinDate)}</p>
-              </div>
-              <div>
-                <p className="text-gray-300 text-xs">Data de Registro</p>
-                <p className="text-white">{formatDate(member.registrationDate)}</p>
+                <p className="text-sm font-medium text-gray-500">Local de trabalho</p>
+                <p className="text-sm">{member.workplace || "N/A"}</p>
               </div>
             </div>
           </div>
+          
+          <div>
+            <h3 className="text-base font-medium text-gray-900 border-b pb-2">Endereço</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Cidade</p>
+                <p className="text-sm">{member.city}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Estado</p>
+                <p className="text-sm">{member.state_address}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Bairro</p>
+                <p className="text-sm">{member.district || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">CEP</p>
+                <p className="text-sm">{member.zipCode || "N/A"}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-base font-medium text-gray-900 border-b pb-2">Contato</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Telefone</p>
+                <p className="text-sm">{member.phone || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">E-mail</p>
+                <p className="text-sm">{member.email || "N/A"}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-base font-medium text-gray-900 border-b pb-2">Status e Datas</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Data de adesão</p>
+                <p className="text-sm">{new Date(member.joinDate).toLocaleDateString("pt-BR")}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Status</p>
+                <MemberStatusBadge status={member.status} />
+              </div>
+            </div>
+          </div>
+          
+          {member.notes && (
+            <div>
+              <h3 className="text-base font-medium text-gray-900 border-b pb-2">Observações</h3>
+              <p className="text-sm mt-2">{member.notes}</p>
+            </div>
+          )}
         </div>
         
-        <div className="flex justify-end gap-3 p-4 border-t border-gray-700">
-          <Button 
-            variant="secondary"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+        <div className="flex justify-end gap-2 pt-4 border-t">
+          <Button
+            variant="outline"
+            className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200"
             onClick={() => onAction("documents", member)}
           >
-            <FileText size={18} className="mr-2" />
-            Documentos
+            <FileText size={16} />
+            <span>Documentos</span>
           </Button>
-          <Button 
-            variant="secondary"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+          <Button
+            variant="outline"
+            className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200"
             onClick={() => onAction("edit", member)}
           >
-            <Pencil size={18} className="mr-2" />
-            Editar
+            <Pencil size={16} />
+            <span>Editar</span>
           </Button>
-          <Button 
-            variant="destructive"
+          <Button
+            variant="outline"
+            className="px-3 gap-1 text-red-600 hover:text-red-800 hover:bg-red-50 border-red-200"
             onClick={() => onAction("delete", member)}
           >
-            <Trash2 size={18} className="mr-2" />
-            Excluir
+            <Trash2 size={16} />
+            <span>Excluir</span>
           </Button>
         </div>
       </DialogContent>
