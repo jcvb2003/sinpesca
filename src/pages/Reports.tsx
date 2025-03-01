@@ -1,48 +1,61 @@
-
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Users, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
+import { PageLayout } from "@/components/layout/PageLayout";
 
-const Reports = () => {
+export default function Reports() {
   return (
-    <div className="container py-6">
-      <h1 className="text-2xl font-bold mb-6">Relatórios</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Sócios Card */}
-        <Link 
-          to="/reports/members"
-          className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg"
-        >
-          <div className="flex items-center mb-4">
-            <div className="bg-blue-100 p-3 rounded-full mr-4">
-              <Users className="text-blue-600" size={24} />
-            </div>
-            <h2 className="text-xl font-medium">Sócios</h2>
-          </div>
-          <p className="text-gray-600">
-            Gerar relatórios sobre os sócios da associação, incluindo dados demográficos, status, e distribuição regional.
-          </p>
-        </Link>
+    <PageLayout>
+      <div className="container py-10">
+        <h1 className="text-3xl font-bold mb-8">Relatórios</h1>
 
-        {/* Requerimentos Card */}
-        <Link 
-          to="/reports/requests"
-          className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg"
-        >
-          <div className="flex items-center mb-4">
-            <div className="bg-green-100 p-3 rounded-full mr-4">
-              <FileText className="text-green-600" size={24} />
-            </div>
-            <h2 className="text-xl font-medium">Requerimentos</h2>
-          </div>
-          <p className="text-gray-600">
-            Gerar relatórios sobre os requerimentos submetidos, aprovações, rejeições e tempo médio de processamento.
-          </p>
-        </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card className="shadow-md">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" />
+                Relatório de Membros
+              </CardTitle>
+              <CardDescription>
+                Visualize e exporte dados de todos os membros
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0 pb-2">
+              <p className="text-sm text-gray-500">
+                Relatório detalhado com informações de todos os membros cadastrados, incluindo status, data de associação e outras informações importantes.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Link to="/reports/members">
+                <Button variant="default">Acessar Relatório</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+
+          <Card className="shadow-md">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" />
+                Relatório de Solicitações
+              </CardTitle>
+              <CardDescription>
+                Visualize e exporte dados de todas as solicitações
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0 pb-2">
+              <p className="text-sm text-gray-500">
+                Relatório detalhado com informações de todas as solicitações realizadas, incluindo status, data e responsável pelo atendimento.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Link to="/reports/requests">
+                <Button variant="default">Acessar Relatório</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
-    </div>
+    </PageLayout>
   );
-};
-
-export default Reports;
+}

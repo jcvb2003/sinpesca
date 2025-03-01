@@ -1,16 +1,14 @@
-
 import React from "react";
+import { DevelopmentCard } from "@/components/common/DevelopmentCard";
+import { PageLayout } from "@/components/layout/PageLayout";
 
-const MembersReport = () => {
+export default function MembersReport() {
   return (
-    <div className="container py-6">
-      <h1 className="text-2xl font-bold mb-6">Relatório de Sócios</h1>
-      
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <p>Conteúdo do relatório de sócios será implementado aqui.</p>
+    <PageLayout>
+      <div className="container py-10">
+        <h1 className="text-3xl font-bold mb-8">Relatório de Membros</h1>
+        <DevelopmentCard />
       </div>
-    </div>
+    </PageLayout>
   );
-};
-
-export default MembersReport;
+}
