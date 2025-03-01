@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Member } from "@/types/member";
@@ -42,7 +43,7 @@ export function MemberTable({ members }: MemberTableProps) {
             <tr className="bg-gray-50 border-b">
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Nº Registro</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Nome Completo</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">CPF</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Profissão</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Localidade</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Status</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Data de Adesão</th>
@@ -78,13 +79,13 @@ export function MemberTable({ members }: MemberTableProps) {
                   className="px-4 py-3 text-sm"
                   onClick={() => setSelectedMember(member)}
                 >
-                  {member.cpf} {/* Assuming cpf field exists */}
+                  {member.profession}
                 </td>
                 <td 
                   className="px-4 py-3 text-sm"
                   onClick={() => setSelectedMember(member)}
                 >
-                  {member.city} {/* Removed state abbreviation */}
+                  {member.city}, {member.state_address}
                 </td>
                 <td 
                   className="px-4 py-3"
@@ -107,7 +108,7 @@ export function MemberTable({ members }: MemberTableProps) {
                         e.stopPropagation();
                         handleAction("documents", member);
                       }}
-                      className="h-8 w-8 text-gray-600 hover:text-gray-800 hover:bg-gray-50" {/* Changed color to gray */}
+                      className="h-8 w-8 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
                     >
                       <FileText size={18} />
                     </Button>
@@ -143,7 +144,7 @@ export function MemberTable({ members }: MemberTableProps) {
       <div className="py-3 px-4 text-sm text-gray-500 border-t">
         Lista de sócios da associação
       </div>
-
+      
       {selectedMember && (
         <MemberModal 
           member={selectedMember}
