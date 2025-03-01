@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Member } from "@/types/member";
 import { MemberStatusBadge } from "./MemberStatusBadge";
 import { MemberModal } from "./MemberModal";
@@ -14,13 +15,12 @@ interface MemberTableProps {
 export function MemberTable({ members }: MemberTableProps) {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleAction = (action: string, member: Member) => {
     if (action === "documents") {
-      toast({
-        title: "Documentos",
-        description: `Acessando documentos de ${member.fullName}`,
-      });
+      navigate(`/documents?memberId=${member.id}`);
+      setSelectedMember(null);
     } else if (action === "edit") {
       toast({
         title: "Editar",

@@ -1,11 +1,25 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, X } from "lucide-react";
+import { useEffect } from "react";
+import { members } from "@/data/mockMembers";
 
-export function RepresentationTermForm() {
+interface RepresentationTermFormProps {
+  memberId?: number;
+}
+
+export function RepresentationTermForm({ memberId }: RepresentationTermFormProps) {
+  const memberData = memberId ? members.find(m => m.id === memberId) : null;
+
+  useEffect(() => {
+    if (memberData) {
+      // Prefill form with member data if available
+      console.log("Prefilling representation term with member data:", memberData);
+    }
+  }, [memberData]);
+
   return (
     <div className="space-y-6">
       <div className="border p-4 rounded-md">

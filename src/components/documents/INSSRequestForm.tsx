@@ -1,14 +1,28 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { members } from "@/data/mockMembers";
 
-export function INSSRequestForm() {
+interface INSSRequestFormProps {
+  memberId?: number;
+}
+
+export function INSSRequestForm({ memberId }: INSSRequestFormProps) {
   const [activeTab, setActiveTab] = useState("requester");
+  const memberData = memberId ? members.find(m => m.id === memberId) : null;
 
+  useEffect(() => {
+    if (memberData) {
+      // Prefill form with member data if available
+      // This is just a placeholder - in a real app you would populate the form fields
+      console.log("Prefilling form with member data:", memberData);
+    }
+  }, [memberData]);
+
+  
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

@@ -1,18 +1,32 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Check, X } from "lucide-react";
+import { useEffect } from "react";
+import { members } from "@/data/mockMembers";
 
-export function ResidenceDeclarationForm() {
+interface ResidenceDeclarationFormProps {
+  memberId?: number;
+}
+
+export function ResidenceDeclarationForm({ memberId }: ResidenceDeclarationFormProps) {
+  const memberData = memberId ? members.find(m => m.id === memberId) : null;
+
+  useEffect(() => {
+    if (memberData) {
+      // Prefill form with member data if available
+      console.log("Prefilling residence declaration with member data:", memberData);
+    }
+  }, [memberData]);
+
   return (
     <div className="space-y-6">
       <div className="border p-4 rounded-md">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
             <Label htmlFor="data">Data:</Label>
-            <Input id="data" type="date" />
+            <Input id="data" type="date" defaultValue={new Date().toISOString().split('T')[0]} />
           </div>
         </div>
         

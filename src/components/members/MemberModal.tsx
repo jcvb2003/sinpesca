@@ -1,5 +1,5 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FileText, Pencil, Trash2 } from "lucide-react";
 import { Member } from "@/types/member";
@@ -21,6 +21,9 @@ export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalPr
             {member.fullName}
             <MemberStatusBadge status={member.status} className="ml-2" />
           </DialogTitle>
+          <DialogDescription className="text-sm text-gray-500">
+            Informações detalhadas do associado
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-6 py-4">
