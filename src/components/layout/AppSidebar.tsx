@@ -1,14 +1,19 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus, FileText, Settings, Menu, X } from "lucide-react";
+import { Users, UserPlus, FileText, Settings, Menu, X, BarChart3 } from "lucide-react";
+
+interface SidebarSubmenuItem {
+  title: string;
+  path: string;
+}
 
 interface SidebarItem {
   title: string;
   path: string;
   icon: any;
+  submenu?: SidebarSubmenuItem[];
 }
 
 const items: SidebarItem[] = [
@@ -31,6 +36,15 @@ const items: SidebarItem[] = [
     title: "Configurações",
     path: "/settings",
     icon: Settings,
+  },
+  {
+    title: "Relatórios",
+    path: "/reports",
+    icon: BarChart3,
+    submenu: [
+      { title: "Sócios", path: "/reports/associates" },
+      { title: "Requerimentos", path: "/reports/requirements" },
+    ],
   },
 ];
 
@@ -67,39 +81,43 @@ export function AppSidebar() {
           {collapsed ? <Menu size={20} /> : <X size={20} />}
         </Button>
       </div>
-      
+
       <div className="flex flex-col gap-1 p-2">
-        {items.map((item) => {
-          const isActive = location.pathname === item.path;
-          
-          return (
+        {items.map((item) => (
+          <React.Fragment key={item.path}>
             <Link
-              key={item.path}
               to={item.path}
               className={cn(
-                "flex items-center p-3 px-4",
-                isActive 
-                  ? "bg-[rgba(3,187,133,0.1)] text-[rgb(3,187,133)] border-l-4 border-[rgb(3,187,133)]"
-                  : "text-gray-700 hover:bg-gray-100"
+                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                (location.pathname === item.path || (item.submenu && item.submenu.some(subItem => location.pathname === subItem.path)))
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               )}
             >
-              <span className="mr-3">
-                <item.icon 
-                  size={20} 
-                  className={cn(
-                    "h-5 w-5",
-                    isActive ? "text-[rgb(3,187,133)]" : ""
-                  )} 
-                />
-              </span>
-              <span className={cn(
-                collapsed ? "opacity-0 w-0 overflow-hidden" : ""
-              )}>
-                {item.title}
-              </span>
+              <item.icon className="h-4 w-4" />
+              {!collapsed && <span>{item.title}</span>}
             </Link>
-          )
-        })}
+
+            {!collapsed && item.submenu && (
+              <div className="ml-7 mt-1 space-y-1">
+                {item.submenu.map((subItem) => (
+                  <Link
+                    key={subItem.path}
+                    to={subItem.path}
+                    className={cn(
+                      "block rounded-md px-3 py-1.5 text-sm transition-colors",
+                      location.pathname === subItem.path
+                        ? "bg-accent/50 text-accent-foreground"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                    )}
+                  >
+                    {subItem.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );
