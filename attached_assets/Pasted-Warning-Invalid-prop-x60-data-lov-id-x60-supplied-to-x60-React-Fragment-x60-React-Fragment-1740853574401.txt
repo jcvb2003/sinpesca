@@ -1,0 +1,29 @@
+Warning: Invalid prop &#x60;data-lov-id&#x60; supplied to &#x60;React.Fragment&#x60;. React.Fragment can only have &#x60;key&#x60; and &#x60;children&#x60; props.
+    at AppSidebar (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/src/components/layout/AppSidebar.tsx:55:22)
+    at div
+    at PageLayout (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/src/components/layout/PageLayout.tsx:11:30)
+    at Index (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/src/pages/Index.tsx:18:51)
+    at RenderedRoute (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:4069:5)
+    at Routes (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:4508:5)
+    at Router (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:4451:15)
+    at BrowserRouter (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:5196:5)
+    at Provider (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/chunk-MVHL7WME.js?v=14a85023:38:15)
+    at TooltipProvider (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=14a85023:61:5)
+    at QueryClientProvider (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=14a85023:2794:3)
+    at App
+at AppSidebar (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/src/components/layout/AppSidebar.tsx:55:22)
+at div
+at PageLayout (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/src/components/layout/PageLayout.tsx:11:30)
+at Index (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/src/pages/Index.tsx:18:51)
+at RenderedRoute (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:4069:5)
+at Routes (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:4508:5)
+at Router (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:4451:15)
+at BrowserRouter (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=14a85023:5196:5)
+at Provider (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/chunk-MVHL7WME.js?v=14a85023:38:15)
+at TooltipProvider (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=14a85023:61:5)
+at QueryClientProvider (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=14a85023:2794:3)
+at App
+at t.value (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://5e3e7eaa-359f-4b78-9bd6-7222acd9842b-00-q89c9dp6woul.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
