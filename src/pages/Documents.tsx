@@ -58,19 +58,19 @@ const Documents = () => {
             <TabsList className="grid grid-cols-3 mb-6">
               <TabsTrigger 
                 value="inss" 
-                className={`py-3 ${activeTab === 'inss' ? 'bg-primary text-white' : 'bg-gray-100'}`}
+                className="py-3 text-center"
               >
                 Requerimento do INSS
               </TabsTrigger>
               <TabsTrigger 
                 value="residence" 
-                className={`py-3 ${activeTab === 'residence' ? 'bg-primary text-white' : 'bg-gray-100'}`}
+                className="py-3 text-center"
               >
                 Declaração de Residência
               </TabsTrigger>
               <TabsTrigger 
                 value="representation" 
-                className={`py-3 ${activeTab === 'representation' ? 'bg-primary text-white' : 'bg-gray-100'}`}
+                className="py-3 text-center"
               >
                 Termo de Representação
               </TabsTrigger>

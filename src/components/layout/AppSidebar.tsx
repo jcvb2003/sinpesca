@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus, Settings, Menu, X } from "lucide-react";
+import { Users, UserPlus, FileText, Settings, Menu, X } from "lucide-react";
 
 interface SidebarItem {
   title: string;
@@ -21,6 +21,11 @@ const items: SidebarItem[] = [
     title: "Cadastro",
     path: "/register",
     icon: UserPlus,
+  },
+  {
+    title: "Documentos",
+    path: "/documents",
+    icon: FileText,
   },
   {
     title: "Configurações",
@@ -74,7 +79,7 @@ export function AppSidebar() {
               className={cn(
                 "flex items-center gap-3 px-3 py-3 text-sm font-medium rounded-md transition-all duration-200",
                 isActive 
-                  ? "bg-primary/10 text-primary" 
+                  ? "bg-green-50 text-primary" 
                   : "text-gray-600 hover:text-primary hover:bg-gray-100",
                 collapsed && "justify-center"
               )}

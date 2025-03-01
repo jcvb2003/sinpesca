@@ -20,25 +20,30 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="bg-white rounded-lg border shadow-sm p-6 animate-slideUp">
+    <div className="bg-white rounded-lg shadow-sm p-6 animate-slideUp">
       <form onSubmit={handleSubmit}>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Cadastro de Sócios</h2>
+          <p className="text-gray-600 mt-1">Preencha o formulário para cadastrar um novo sócio</p>
+        </div>
+        
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-3 mb-6">
             <TabsTrigger 
               value="frente" 
-              className={`py-3 ${activeTab === 'frente' ? 'bg-primary text-white' : 'bg-gray-100'}`}
+              className="py-3 text-center"
             >
               Frente
             </TabsTrigger>
             <TabsTrigger 
               value="verso" 
-              className={`py-3 ${activeTab === 'verso' ? 'bg-primary text-white' : 'bg-gray-100'}`}
+              className="py-3 text-center"
             >
               Verso
             </TabsTrigger>
             <TabsTrigger 
               value="outros" 
-              className={`py-3 ${activeTab === 'outros' ? 'bg-primary text-white' : 'bg-gray-100'}`}
+              className="py-3 text-center"
             >
               Outros
             </TabsTrigger>
