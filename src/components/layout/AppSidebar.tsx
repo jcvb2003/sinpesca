@@ -77,19 +77,23 @@ export function AppSidebar() {
               key={item.path}
               to={item.path}
               className={cn(
-                "flex items-center gap-3 px-3 py-3 text-sm font-medium rounded-md transition-all duration-200",
+                "flex items-center p-3 px-4",
                 isActive 
-                  ? "bg-green-50 text-primary" 
-                  : "text-gray-600 hover:text-primary hover:bg-gray-100",
-                collapsed && "justify-center"
+                  ? "bg-[rgba(3,187,133,0.1)] text-[rgb(3,187,133)] border-l-4 border-[rgb(3,187,133)]"
+                  : "text-gray-700 hover:bg-gray-100"
               )}
             >
-              <item.icon size={20} className={cn(
-                isActive ? "text-primary" : "text-gray-500"
-              )} />
+              <span className="mr-3">
+                <item.icon 
+                  size={20} 
+                  className={cn(
+                    "h-5 w-5",
+                    isActive ? "text-[rgb(3,187,133)]" : ""
+                  )} 
+                />
+              </span>
               <span className={cn(
-                "transition-all duration-300",
-                collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                collapsed ? "opacity-0 w-0 overflow-hidden" : ""
               )}>
                 {item.title}
               </span>
