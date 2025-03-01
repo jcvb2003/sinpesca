@@ -55,7 +55,7 @@ const Documents = () => {
         
         <div className="bg-white rounded-lg border shadow-sm p-6 animate-slideUp">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-3 mb-6">
+            <TabsList className="grid grid-cols-3 mb-6 gap-2 p-2">
               <TabsTrigger 
                 value="inss" 
                 className="py-3 text-center"
