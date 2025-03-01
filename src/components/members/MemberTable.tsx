@@ -43,7 +43,7 @@ export function MemberTable({ members }: MemberTableProps) {
             <tr className="bg-gray-50 border-b">
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Nº Registro</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Nome Completo</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Profissão</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">CPF</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Localidade</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Status</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Data de Adesão</th>
@@ -79,13 +79,13 @@ export function MemberTable({ members }: MemberTableProps) {
                   className="px-4 py-3 text-sm"
                   onClick={() => setSelectedMember(member)}
                 >
-                  {member.profession}
+                  {member.cpf}
                 </td>
                 <td 
                   className="px-4 py-3 text-sm"
                   onClick={() => setSelectedMember(member)}
                 >
-                  {member.city}, {member.state_address}
+                  {member.city}
                 </td>
                 <td 
                   className="px-4 py-3"
