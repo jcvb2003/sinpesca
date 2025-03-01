@@ -118,10 +118,10 @@ export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalPr
             </div>
           </div>
           
-          {member.notes && (
+          {member.observations && (
             <div>
               <h3 className="text-base font-medium text-gray-900 border-b pb-2">Observações</h3>
-              <p className="text-sm mt-2">{member.notes}</p>
+              <p className="text-sm mt-2">{member.observations}</p>
             </div>
           )}
         </div>
