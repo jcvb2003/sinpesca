@@ -1,9 +1,7 @@
-
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DevelopmentCard } from "@/components/common/DevelopmentCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Upload, Download, DatabaseBackup, Database, LogOut } from "lucide-react";
+import { Upload, Download, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { members } from "@/data/mockMembers";
@@ -23,7 +21,6 @@ const Settings = () => {
   };
 
   const handleExportMembers = () => {
-    // Converter dados para CSV
     const headers = "ID,Número de Registro,Nome Completo,CPF,Profissão,Cidade,Estado,Status,Data de Nascimento\n";
     const csvData = members.map(member => 
       `${member.id},${member.registrationNumber},"${member.fullName}",${member.cpf},${member.profession || ''},${member.city || ''},${member.state_address || ''},${member.status},${member.birthDate}`
@@ -61,43 +58,27 @@ const Settings = () => {
     input.click();
   };
 
-  const handleExportDataAccess = () => {
-    toast({
-      title: "Exportação para MS Access",
-      description: "Preparando arquivo .accdb com todos os dados do sistema. Esta é uma simulação.",
-    });
-    
-    // Aqui simulamos apenas a exportação, em um sistema real conectaríamos
-    // com um backend para gerar o arquivo Access
-    setTimeout(() => {
-      toast({
-        title: "Exportação concluída",
-        description: "O arquivo Access foi gerado com sucesso",
-      });
-    }, 2000);
-  };
-
   return (
     <PageLayout>
       <div className="container py-10">
         <h1 className="text-3xl font-bold mb-8">Configurações</h1>
         <p className="text-gray-600 mb-6">Customize as configurações do sistema</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="shadow-md">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <Upload className="h-5 w-5 text-primary" />
                 <Download className="h-5 w-5 text-primary" />
-                Importar ou Exportar
+                Importar ou Exportar Sócios
               </CardTitle>
               <CardDescription>
-                Importe ou exporte dados do sistema
+                Importe ou exporte dados dos sócios
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0 pb-2">
               <p className="text-sm text-gray-500">
-                Ferramenta para importar ou exportar dados completos do sistema, incluindo membros, solicitações e configurações.
+                Ferramenta para importar ou exportar dados completos dos sócios cadastrados no sistema, incluindo informações pessoais e de status.
               </p>
             </CardContent>
             <CardFooter className="flex gap-3">
@@ -108,29 +89,6 @@ const Settings = () => {
               <Button onClick={handleExportMembers} variant="default" className="flex items-center gap-2">
                 <Download className="h-4 w-4" />
                 Exportar CSV
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="shadow-md">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <Database className="h-5 w-5 text-primary" />
-                Microsoft Access
-              </CardTitle>
-              <CardDescription>
-                Exportar para banco de dados Access
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-0 pb-2">
-              <p className="text-sm text-gray-500">
-                Exporta todos os dados do sistema para um arquivo do Microsoft Access (.accdb) para facilitar a integração com outros sistemas.
-              </p>
-            </CardContent>
-            <CardFooter className="flex gap-3">
-              <Button onClick={handleExportDataAccess} variant="default" className="flex items-center gap-2 w-full">
-                <DatabaseBackup className="h-4 w-4" />
-                Exportar para MS Access
               </Button>
             </CardFooter>
           </Card>
