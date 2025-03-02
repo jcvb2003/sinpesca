@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { FileText, Pencil, Trash2 } from "lucide-react";
+import { FileText, Pencil, Trash2, User } from "lucide-react";
 import { Member } from "@/types/member";
 import { MemberStatusBadge } from "./MemberStatusBadge";
 
@@ -15,6 +15,22 @@ export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalPr
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+        <div className="absolute right-16 top-4 h-16 w-16 rounded-full border border-gray-200 flex items-center justify-center bg-gray-50 overflow-hidden">
+          {member.profilePhoto ? (
+            <img 
+              src={member.profilePhoto} 
+              alt={`Foto de ${member.fullName}`} 
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=80&h=80&fit=crop';
+              }}
+            />
+          ) : (
+            <User className="h-8 w-8 text-gray-400" />
+          )}
+        </div>
+        
         <DialogHeader>
           <DialogTitle className="text-xl font-bold flex items-center gap-2">
             {member.fullName}
