@@ -3,9 +3,80 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DevelopmentCard } from "@/components/common/DevelopmentCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Upload, Download } from "lucide-react";
+import { Upload, Download, DatabaseBackup, Database, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import { members } from "@/data/mockMembers";
 
 const Settings = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("user");
+    toast({
+      title: "Sessão encerrada",
+      description: "Você foi desconectado com sucesso",
+    });
+    navigate("/login");
+  };
+
+  const handleExportMembers = () => {
+    // Converter dados para CSV
+    const headers = "ID,Número de Registro,Nome Completo,CPF,Profissão,Cidade,Estado,Status,Data de Nascimento\n";
+    const csvData = members.map(member => 
+      `${member.id},${member.registrationNumber},"${member.fullName}",${member.cpf},${member.profession || ''},${member.city || ''},${member.state_address || ''},${member.status},${member.birthDate}`
+    ).join("\n");
+
+    const blob = new Blob([headers + csvData], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'membros_sindicato.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Exportação concluída",
+      description: "Os dados dos membros foram exportados com sucesso",
+    });
+  };
+
+  const handleImportData = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv,.xlsx,.xls,.mdb,.accdb';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        toast({
+          title: "Arquivo recebido",
+          description: `O arquivo ${file.name} será processado. Esta é uma simulação.`,
+        });
+      }
+    };
+    input.click();
+  };
+
+  const handleExportDataAccess = () => {
+    toast({
+      title: "Exportação para MS Access",
+      description: "Preparando arquivo .accdb com todos os dados do sistema. Esta é uma simulação.",
+    });
+    
+    // Aqui simulamos apenas a exportação, em um sistema real conectaríamos
+    // com um backend para gerar o arquivo Access
+    setTimeout(() => {
+      toast({
+        title: "Exportação concluída",
+        description: "O arquivo Access foi gerado com sucesso",
+      });
+    }, 2000);
+  };
+
   return (
     <PageLayout>
       <div className="container py-10">
@@ -30,18 +101,61 @@ const Settings = () => {
               </p>
             </CardContent>
             <CardFooter className="flex gap-3">
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button onClick={handleImportData} variant="outline" className="flex items-center gap-2">
                 <Upload className="h-4 w-4" />
                 Importar
               </Button>
-              <Button variant="default" className="flex items-center gap-2">
+              <Button onClick={handleExportMembers} variant="default" className="flex items-center gap-2">
                 <Download className="h-4 w-4" />
-                Exportar
+                Exportar CSV
               </Button>
             </CardFooter>
           </Card>
           
-          <DevelopmentCard />
+          <Card className="shadow-md">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2">
+                <Database className="h-5 w-5 text-primary" />
+                Microsoft Access
+              </CardTitle>
+              <CardDescription>
+                Exportar para banco de dados Access
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0 pb-2">
+              <p className="text-sm text-gray-500">
+                Exporta todos os dados do sistema para um arquivo do Microsoft Access (.accdb) para facilitar a integração com outros sistemas.
+              </p>
+            </CardContent>
+            <CardFooter className="flex gap-3">
+              <Button onClick={handleExportDataAccess} variant="default" className="flex items-center gap-2 w-full">
+                <DatabaseBackup className="h-4 w-4" />
+                Exportar para MS Access
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          <Card className="shadow-md bg-red-50">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-red-600">
+                <LogOut className="h-5 w-5" />
+                Sair do Sistema
+              </CardTitle>
+              <CardDescription className="text-red-600/80">
+                Encerrar sessão atual
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0 pb-2">
+              <p className="text-sm text-red-600/70">
+                Ao sair, você precisará fazer login novamente para acessar o sistema.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button onClick={handleLogout} variant="destructive" className="w-full">
+                Sair
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </PageLayout>

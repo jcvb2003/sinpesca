@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Users, FileText } from "lucide-react";
@@ -37,15 +38,15 @@ export default function Reports() {
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-primary" />
-                Relatório de Solicitações
+                Relatório de Requerimentos
               </CardTitle>
               <CardDescription>
-                Visualize e exporte dados de todas as solicitações
+                Visualize e exporte dados de todos os requerimentos do INSS
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0 pb-2">
               <p className="text-sm text-gray-500">
-                Relatório detalhado com informações de todas as solicitações realizadas, incluindo status, data e responsável pelo atendimento.
+                Relatório detalhado com informações de todos os requerimentos do INSS realizados, incluindo status, data e tipo de benefício solicitado.
               </p>
             </CardContent>
             <CardFooter>
