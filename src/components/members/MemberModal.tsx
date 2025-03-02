@@ -3,32 +3,25 @@ import { Button } from "@/components/ui/button";
 import { FileText, Pencil, Trash2, User } from "lucide-react";
 import { Member } from "@/types/member";
 import { MemberStatusBadge } from "./MemberStatusBadge";
-
 interface MemberModalProps {
   member: Member;
   isOpen: boolean;
   onClose: () => void;
   onAction: (action: string, member: Member) => void;
 }
-
-export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalProps) {
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+export function MemberModal({
+  member,
+  isOpen,
+  onClose,
+  onAction
+}: MemberModalProps) {
+  return <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[1200px] max-h-[80vh] overflow-y-auto">
         <div className="absolute right-16 top-4 h-16 w-16 rounded-full border border-gray-200 flex items-center justify-center bg-gray-50 overflow-hidden">
-          {member.profilePhoto ? (
-            <img 
-              src={member.profilePhoto} 
-              alt={`Foto de ${member.fullName}`} 
-              className="h-full w-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=80&h=80&fit=crop';
-              }}
-            />
-          ) : (
-            <User className="h-8 w-8 text-gray-400" />
-          )}
+          {member.profilePhoto ? <img src={member.profilePhoto} alt={`Foto de ${member.fullName}`} className="h-full w-full object-cover" onError={e => {
+          const target = e.target as HTMLImageElement;
+          target.src = 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=80&h=80&fit=crop';
+        }} /> : <User className="h-8 w-8 text-gray-400" />}
         </div>
         
         <DialogHeader>
@@ -136,41 +129,26 @@ export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalPr
             </div>
           </div>
           
-          {member.observations && (
-            <div>
+          {member.observations && <div>
               <h3 className="text-base font-medium text-gray-900 border-b pb-2">Observações</h3>
               <p className="text-sm mt-2">{member.observations}</p>
-            </div>
-          )}
+            </div>}
         </div>
         
         <div className="flex justify-end gap-2 pt-4 border-t">
-          <Button
-            variant="outline"
-            className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200"
-            onClick={() => onAction("documents", member)}
-          >
+          <Button variant="outline" className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200" onClick={() => onAction("documents", member)}>
             <FileText size={16} />
             <span>Documentos</span>
           </Button>
-          <Button
-            variant="outline"
-            className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200"
-            onClick={() => onAction("edit", member)}
-          >
+          <Button variant="outline" className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200" onClick={() => onAction("edit", member)}>
             <Pencil size={16} />
             <span>Editar</span>
           </Button>
-          <Button
-            variant="outline"
-            className="px-3 gap-1 text-red-600 hover:text-red-800 hover:bg-red-50 border-red-200"
-            onClick={() => onAction("delete", member)}
-          >
+          <Button variant="outline" className="px-3 gap-1 text-red-600 hover:text-red-800 hover:bg-red-50 border-red-200" onClick={() => onAction("delete", member)}>
             <Trash2 size={16} />
             <span>Excluir</span>
           </Button>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 }
