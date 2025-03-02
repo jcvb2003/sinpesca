@@ -51,7 +51,7 @@ export function MemberStatusBadge({
 
   return (
     <div className={cn("flex items-center gap-1.5", className)}>
-      <div className={cn("px-3 py-1.5 rounded-md flex items-center gap-1.5", bgColor)}>
+      <div className={cn("px-3 py-1.5 rounded-full flex items-center gap-1.5", bgColor)}>
         {icon}
         {showLabel && <span className={cn("text-sm font-medium", color)}>{label}</span>}
       </div>
