@@ -1,4 +1,3 @@
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FileText, Pencil, Trash2 } from "lucide-react";
@@ -15,7 +14,7 @@ interface MemberModalProps {
 export function MemberModal({ member, isOpen, onClose, onAction }: MemberModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold flex items-center gap-2">
             {member.fullName}
