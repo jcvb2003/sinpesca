@@ -3,15 +3,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "lucide-react";
+import { Member } from "@/types/member";
 
-export function BackTab() {
+interface BackTabProps {
+  member?: Member | null;
+}
+
+export function BackTab({ member }: BackTabProps) {
+  const UF_OPTIONS = [
+    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT",
+    "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
+  ];
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-2">
           <Label htmlFor="maritalStatus">Estado Civil</Label>
-          <Select>
-            <SelectTrigger>
+          <Select defaultValue={member?.maritalStatus || ""}>
+            <SelectTrigger id="maritalStatus">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
@@ -25,8 +35,8 @@ export function BackTab() {
         
         <div className="space-y-2">
           <Label htmlFor="literate">Alfabetizado</Label>
-          <Select>
-            <SelectTrigger>
+          <Select defaultValue={member?.literate ? "sim" : "nao"}>
+            <SelectTrigger id="literate">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
@@ -38,8 +48,8 @@ export function BackTab() {
         
         <div className="space-y-2">
           <Label htmlFor="gender">Sexo</Label>
-          <Select>
-            <SelectTrigger>
+          <Select defaultValue={member?.gender || ""}>
+            <SelectTrigger id="gender">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
@@ -58,16 +68,22 @@ export function BackTab() {
             id="rg"
             placeholder="Número do RG"
             className="w-full"
+            defaultValue={member?.rg}
           />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="rgUf">UF RG</Label>
-          <Input
-            id="rgUf"
-            placeholder="UF"
-            className="w-full"
-          />
+          <Select defaultValue={member?.rgUf || ""}>
+            <SelectTrigger id="rgUf">
+              <SelectValue placeholder="Selecione o UF" />
+            </SelectTrigger>
+            <SelectContent>
+              {UF_OPTIONS.map((uf) => (
+                <SelectItem key={uf} value={uf}>{uf}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         
         <div className="space-y-2">
@@ -76,7 +92,9 @@ export function BackTab() {
             <Input
               id="rgIssueDate"
               placeholder="dd/mm/aaaa"
+              type="date"
               className="w-full pl-10"
+              defaultValue={member?.rgIssueDate ? new Date(member.rgIssueDate).toISOString().split('T')[0] : ''}
             />
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
           </div>

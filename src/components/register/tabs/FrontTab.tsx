@@ -3,8 +3,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
+import { Member } from "@/types/member";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function FrontTab() {
+interface FrontTabProps {
+  member?: Member | null;
+}
+
+export function FrontTab({ member }: FrontTabProps) {
+  const UF_OPTIONS = [
+    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT",
+    "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="space-y-6">
@@ -16,6 +27,7 @@ export function FrontTab() {
             id="registrationNumber"
             placeholder="Ex: 202301"
             className="w-full"
+            defaultValue={member?.registrationNumber}
           />
         </div>
         
@@ -26,6 +38,8 @@ export function FrontTab() {
               id="registrationDate"
               placeholder="dd/mm/aaaa"
               className="w-full pl-10"
+              defaultValue={member?.joinDate ? new Date(member.joinDate).toISOString().split('T')[0] : ''}
+              type="date"
             />
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
           </div>
@@ -37,6 +51,7 @@ export function FrontTab() {
             id="location"
             placeholder="Ex: São Paulo, SP"
             className="w-full"
+            defaultValue={member?.city ? `${member.city}, ${member.state_address}` : ''}
           />
         </div>
       </div>
@@ -50,6 +65,7 @@ export function FrontTab() {
             id="fullName"
             placeholder="Nome completo"
             className="w-full"
+            defaultValue={member?.fullName}
           />
         </div>
         
@@ -59,6 +75,7 @@ export function FrontTab() {
             id="nickname"
             placeholder="Apelido (opcional)"
             className="w-full"
+            defaultValue={member?.nickname}
           />
         </div>
         
@@ -68,7 +85,9 @@ export function FrontTab() {
             <Input
               id="birthDate"
               placeholder="dd/mm/aaaa"
+              type="date"
               className="w-full pl-10"
+              defaultValue={member?.birthDate ? new Date(member.birthDate).toISOString().split('T')[0] : ''}
             />
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
           </div>
@@ -80,6 +99,7 @@ export function FrontTab() {
             id="fatherName"
             placeholder="Nome do pai"
             className="w-full"
+            defaultValue={member?.fatherName}
           />
         </div>
         
@@ -89,6 +109,7 @@ export function FrontTab() {
             id="motherName"
             placeholder="Nome da mãe"
             className="w-full"
+            defaultValue={member?.motherName}
           />
         </div>
         
@@ -98,6 +119,7 @@ export function FrontTab() {
             id="nationality"
             placeholder="Ex: Brasileira"
             className="w-full"
+            defaultValue={member?.nationality}
           />
         </div>
         
@@ -107,16 +129,22 @@ export function FrontTab() {
             id="birthplace"
             placeholder="Cidade natal"
             className="w-full"
+            defaultValue={member?.birthplace}
           />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="state">Estado (UF)</Label>
-          <Input
-            id="state"
-            placeholder="UF"
-            className="w-full"
-          />
+          <Select defaultValue={member?.state || ""}>
+            <SelectTrigger id="state">
+              <SelectValue placeholder="Selecione o UF" />
+            </SelectTrigger>
+            <SelectContent>
+              {UF_OPTIONS.map((uf) => (
+                <SelectItem key={uf} value={uf}>{uf}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         
         <div className="space-y-2">
@@ -125,6 +153,7 @@ export function FrontTab() {
             id="profession"
             placeholder="Ex: Advogado, Médico"
             className="w-full"
+            defaultValue={member?.profession}
           />
         </div>
       </div>
@@ -138,6 +167,7 @@ export function FrontTab() {
             id="street"
             placeholder="Nome da rua"
             className="w-full"
+            defaultValue={member?.street}
           />
         </div>
         
@@ -147,6 +177,7 @@ export function FrontTab() {
             id="number"
             placeholder="Número"
             className="w-full"
+            defaultValue={member?.number}
           />
         </div>
         
@@ -156,6 +187,7 @@ export function FrontTab() {
             id="district"
             placeholder="Bairro"
             className="w-full"
+            defaultValue={member?.district}
           />
         </div>
         
@@ -165,16 +197,22 @@ export function FrontTab() {
             id="city"
             placeholder="Cidade"
             className="w-full"
+            defaultValue={member?.city}
           />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="stateAddress">Estado (UF)</Label>
-          <Input
-            id="stateAddress"
-            placeholder="UF"
-            className="w-full"
-          />
+          <Select defaultValue={member?.state_address || ""}>
+            <SelectTrigger id="stateAddress">
+              <SelectValue placeholder="Selecione o UF" />
+            </SelectTrigger>
+            <SelectContent>
+              {UF_OPTIONS.map((uf) => (
+                <SelectItem key={uf} value={uf}>{uf}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         
         <div className="space-y-2">
@@ -183,6 +221,7 @@ export function FrontTab() {
             id="zipCode"
             placeholder="00000-000"
             className="w-full"
+            defaultValue={member?.zipCode}
           />
         </div>
         
@@ -192,14 +231,23 @@ export function FrontTab() {
             id="phone"
             placeholder="(00) 00000-0000"
             className="w-full"
+            defaultValue={member?.phone}
           />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="profilePhoto">Foto de Perfil</Label>
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gray-100 border rounded-md flex items-center justify-center">
-              <span className="text-gray-400">Foto</span>
+            <div className="w-16 h-16 bg-gray-100 border rounded-md flex items-center justify-center overflow-hidden">
+              {member?.profilePhoto ? (
+                <img 
+                  src={member.profilePhoto} 
+                  alt="Foto do perfil" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-gray-400">Foto</span>
+              )}
             </div>
             <Button variant="outline" size="sm">
               Carregar Foto

@@ -1,4 +1,3 @@
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FileText, Pencil, Trash2, User } from "lucide-react";
@@ -46,6 +45,11 @@ export function MemberModal({
       onClose();
       navigate(`/documents?memberId=${member.id}`);
     }
+  };
+
+  const handleEdit = () => {
+    onClose();
+    navigate(`/register?memberId=${member.id}`);
   };
 
   return (
@@ -186,7 +190,7 @@ export function MemberModal({
               <FileText size={16} />
               <span>Documentos</span>
             </Button>
-            <Button variant="outline" className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200" onClick={() => onAction("edit", member)}>
+            <Button variant="outline" className="px-3 gap-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200" onClick={handleEdit}>
               <Pencil size={16} />
               <span>Editar</span>
             </Button>

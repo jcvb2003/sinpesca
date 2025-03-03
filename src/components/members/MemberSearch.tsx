@@ -1,23 +1,29 @@
+
 import { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
+
 interface MemberSearchProps {
   onSearch: (query: string) => void;
 }
+
 export function MemberSearch({
   onSearch
 }: MemberSearchProps) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("name");
+  
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       onSearch(query);
     }, 300);
+    
     return () => clearTimeout(debounceTimeout);
   }, [query, onSearch]);
+  
   return <div className="flex gap-2">
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -78,7 +84,5 @@ export function MemberSearch({
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      
-      
     </div>;
 }
