@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -29,7 +28,6 @@ export function RegisterForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Check if we're editing an existing member
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const memberId = params.get('memberId');

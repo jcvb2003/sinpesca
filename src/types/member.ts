@@ -40,6 +40,7 @@ export interface Member {
   literate?: string;
   rg?: string;
   rgState?: string;
+  rgUf?: string; // Added this property to fix the error
   rgIssueDate?: string;
   voterTitle?: string;
   electoralZone?: string;
