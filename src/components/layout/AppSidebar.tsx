@@ -1,8 +1,9 @@
+
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus, FileText, Settings, Menu, X, BarChart3 } from "lucide-react";
+import { Users, UserPlus, FileText, Settings, Menu, X, BarChart3, Fish } from "lucide-react";
 
 interface SidebarSubmenuItem {
   title: string;
@@ -33,15 +34,15 @@ const items: SidebarItem[] = [
     icon: FileText,
   },
   {
-    title: "Configurações",
-    path: "/settings",
-    icon: Settings,
-  },
-  {
     title: "Relatórios",
     path: "/reports",
     icon: BarChart3,
     submenu: [], //Removed Sócios and Requerimentos
+  },
+  {
+    title: "Configurações",
+    path: "/settings",
+    icon: Settings,
   },
 ];
 
@@ -61,14 +62,19 @@ export function AppSidebar() {
       )}
     >
       <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-        <h1 
-          className={cn(
-            "text-lg font-bold text-primary transition-opacity duration-300", 
-            collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-          )}
-        >
-          Associação
-        </h1>
+        <div className={cn(
+          "flex items-center gap-2 transition-opacity duration-300", 
+          collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+        )}>
+          <img 
+            src="/lovable-uploads/a10080bc-4a55-4cb6-aaa0-8177088dab0b.png" 
+            alt="SINPESCA-PA" 
+            className="h-8 w-auto"
+          />
+          <h1 className="text-lg font-bold text-primary">
+            SINPESCA-PA
+          </h1>
+        </div>
         <Button 
           variant="ghost" 
           size="icon" 
@@ -81,7 +87,7 @@ export function AppSidebar() {
 
       <div className="flex flex-col gap-1 p-2">
         {items.map((item) => (
-              <div key={item.path}> {/* Replaced React.Fragment with div */}
+              <div key={item.path}> 
                 <Link
                   to={item.path}
                   className={cn(

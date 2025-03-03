@@ -9,12 +9,16 @@ import { RepresentationTermForm } from "@/components/documents/RepresentationTer
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { members } from "@/data/mockMembers";
+import { INSSRequestDialog } from "@/components/documents/INSSRequestDialog";
+import { RepresentationTermDialog } from "@/components/documents/RepresentationTermDialog";
 
 const Documents = () => {
   const [activeTab, setActiveTab] = useState("inss");
   const [searchParams] = useSearchParams();
   const memberId = searchParams.get("memberId");
   const navigate = useNavigate();
+  const [showINSSForm, setShowINSSForm] = useState(false);
+  const [showRepresentationForm, setShowRepresentationForm] = useState(false);
   
   const memberData = memberId 
     ? members.find(m => m.id === memberId) 
@@ -25,6 +29,13 @@ const Documents = () => {
     const docType = searchParams.get("type");
     if (docType && ["inss", "residence", "representation"].includes(docType)) {
       setActiveTab(docType);
+      
+      // Show special forms if needed
+      if (docType === "inss") {
+        setShowINSSForm(true);
+      } else if (docType === "representation") {
+        setShowRepresentationForm(true);
+      }
     }
   }, [searchParams]);
 
@@ -59,6 +70,7 @@ const Documents = () => {
               <TabsTrigger 
                 value="inss" 
                 className="py-3 text-center"
+                onClick={() => setShowINSSForm(true)}
               >
                 Requerimento do INSS
               </TabsTrigger>
@@ -71,6 +83,7 @@ const Documents = () => {
               <TabsTrigger 
                 value="representation" 
                 className="py-3 text-center"
+                onClick={() => setShowRepresentationForm(true)}
               >
                 Termo de Representação
               </TabsTrigger>
@@ -90,6 +103,20 @@ const Documents = () => {
           </Tabs>
         </div>
       </div>
+
+      {showINSSForm && (
+        <INSSRequestDialog
+          isOpen={showINSSForm}
+          onClose={() => setShowINSSForm(false)}
+        />
+      )}
+
+      {showRepresentationForm && (
+        <RepresentationTermDialog
+          isOpen={showRepresentationForm}
+          onClose={() => setShowRepresentationForm(false)}
+        />
+      )}
     </PageLayout>
   );
 };
