@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -33,15 +34,15 @@ const items: SidebarItem[] = [
     icon: FileText,
   },
   {
-    title: "Configurações",
-    path: "/settings",
-    icon: Settings,
-  },
-  {
     title: "Relatórios",
     path: "/reports",
     icon: BarChart3,
-    submenu: [], //Removed Sócios and Requerimentos
+    submenu: [], 
+  },
+  {
+    title: "Configurações",
+    path: "/settings",
+    icon: Settings,
   },
 ];
 
@@ -61,14 +62,21 @@ export function AppSidebar() {
       )}
     >
       <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-        <h1 
-          className={cn(
-            "text-lg font-bold text-primary transition-opacity duration-300", 
-            collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-          )}
-        >
-          Associação
-        </h1>
+        <div className="flex items-center gap-2 overflow-hidden">
+          <img 
+            src="/lovable-uploads/fe53ea41-ea10-4955-bdcb-3484947cc536.png" 
+            alt="SINPESCA-PA Logo" 
+            className="h-10 w-auto"
+          />
+          <h1 
+            className={cn(
+              "text-lg font-bold text-primary transition-opacity duration-300", 
+              collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+            )}
+          >
+            SINPESCA-PA
+          </h1>
+        </div>
         <Button 
           variant="ghost" 
           size="icon" 
@@ -81,7 +89,7 @@ export function AppSidebar() {
 
       <div className="flex flex-col gap-1 p-2">
         {items.map((item) => (
-              <div key={item.path}> {/* Replaced React.Fragment with div */}
+              <div key={item.path}>
                 <Link
                   to={item.path}
                   className={cn(

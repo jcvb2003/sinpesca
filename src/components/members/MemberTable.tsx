@@ -7,6 +7,9 @@ import { MemberModal } from "./MemberModal";
 import { Button } from "@/components/ui/button";
 import { FileText, Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { DocumentSelectionDialog } from "../documents/DocumentSelectionDialog";
+import { INSSRequestDialog } from "../documents/INSSRequestDialog";
+import { RepresentationTermDialog } from "../documents/RepresentationTermDialog";
 
 interface MemberTableProps {
   members: Member[];
@@ -14,13 +17,17 @@ interface MemberTableProps {
 
 export function MemberTable({ members }: MemberTableProps) {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [showDocumentSelection, setShowDocumentSelection] = useState(false);
+  const [showINSSRequest, setShowINSSRequest] = useState(false);
+  const [showRepresentationTerm, setShowRepresentationTerm] = useState(false);
+  const [activeMember, setActiveMember] = useState<Member | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleAction = (action: string, member: Member) => {
     if (action === "documents") {
-      navigate(`/documents?memberId=${member.id}`);
-      setSelectedMember(null);
+      setActiveMember(member);
+      setShowDocumentSelection(true);
     } else if (action === "edit") {
       toast({
         title: "Editar",
@@ -32,6 +39,20 @@ export function MemberTable({ members }: MemberTableProps) {
         description: `Excluindo ${member.fullName}`,
         variant: "destructive",
       });
+    }
+  };
+
+  const handleSelectDocument = (type: string) => {
+    setShowDocumentSelection(false);
+
+    if (type === "inss") {
+      setShowINSSRequest(true);
+    } else if (type === "residence") {
+      navigate(`/documents?memberId=${activeMember?.id}&type=residence`);
+    } else if (type === "representation") {
+      setShowRepresentationTerm(true);
+    } else if (type === "all") {
+      navigate(`/documents?memberId=${activeMember?.id}`);
     }
   };
 
@@ -153,6 +174,24 @@ export function MemberTable({ members }: MemberTableProps) {
           onAction={handleAction}
         />
       )}
+
+      <DocumentSelectionDialog 
+        isOpen={showDocumentSelection}
+        onClose={() => setShowDocumentSelection(false)}
+        onSelectDocument={handleSelectDocument}
+      />
+
+      <INSSRequestDialog
+        isOpen={showINSSRequest}
+        onClose={() => setShowINSSRequest(false)}
+        memberId={activeMember?.id}
+      />
+
+      <RepresentationTermDialog
+        isOpen={showRepresentationTerm}
+        onClose={() => setShowRepresentationTerm(false)}
+        memberId={activeMember?.id}
+      />
     </div>
   );
 }
