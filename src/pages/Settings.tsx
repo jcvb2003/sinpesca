@@ -1,3 +1,4 @@
+
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -5,19 +6,34 @@ import { Upload, Download, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { members } from "@/data/mockMembers";
+import { supabase } from "@/integrations/supabase/client";
 
 const Settings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("user");
-    toast({
-      title: "Sessão encerrada",
-      description: "Você foi desconectado com sucesso",
-    });
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        throw error;
+      }
+      
+      toast({
+        title: "Sessão encerrada",
+        description: "Você foi desconectado com sucesso",
+      });
+      
+      navigate("/login");
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+      toast({
+        title: "Erro ao encerrar sessão",
+        description: "Ocorreu um erro ao tentar desconectar. Tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleExportMembers = () => {

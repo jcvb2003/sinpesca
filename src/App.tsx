@@ -14,14 +14,39 @@ import RequestsReport from "@/pages/RequestsReport";
 import Settings from "@/pages/Settings";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import { supabase } from "./integrations/supabase/client";
+import { Session } from "@supabase/supabase-js";
 
 const queryClient = new QueryClient();
 
 // Componente para proteger rotas
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
   
-  if (!isAuthenticated) {
+  useEffect(() => {
+    // Get current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+    
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        setLoading(false);
+      }
+    );
+    
+    return () => subscription.unsubscribe();
+  }, []);
+  
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+  
+  if (!session) {
     return <Navigate to="/login" replace />;
   }
   
@@ -29,17 +54,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  const [isChecking, setIsChecking] = useState(true);
-
-  useEffect(() => {
-    // Verificar autenticação ao carregar a aplicação
-    setIsChecking(false);
-  }, []);
-
-  if (isChecking) {
-    return <div>Carregando...</div>;
-  }
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
