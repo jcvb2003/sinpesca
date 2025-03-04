@@ -6,9 +6,11 @@ import { Member } from "@/types/member";
 
 interface RegistrationInfoSectionProps {
   member?: Member | null;
+  formData: Partial<Member>;
+  onInputChange: (field: string, value: any) => void;
 }
 
-export function RegistrationInfoSection({ member }: RegistrationInfoSectionProps) {
+export function RegistrationInfoSection({ member, formData, onInputChange }: RegistrationInfoSectionProps) {
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-medium">Informações de Registro</h3>
@@ -19,18 +21,20 @@ export function RegistrationInfoSection({ member }: RegistrationInfoSectionProps
           id="registrationNumber"
           placeholder="Ex: 202301"
           className="w-full"
-          defaultValue={member?.registrationNumber}
+          value={formData.registrationNumber || ''}
+          onChange={(e) => onInputChange('registrationNumber', e.target.value)}
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="registrationDate">Data de Cadastro</Label>
+        <Label htmlFor="joinDate">Data de Cadastro</Label>
         <div className="relative">
           <Input
-            id="registrationDate"
+            id="joinDate"
             placeholder="dd/mm/aaaa"
             className="w-full pl-10"
-            defaultValue={member?.joinDate ? new Date(member.joinDate).toISOString().split('T')[0] : ''}
+            value={formData.joinDate || ''}
+            onChange={(e) => onInputChange('joinDate', e.target.value)}
             type="date"
           />
           <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
@@ -43,7 +47,11 @@ export function RegistrationInfoSection({ member }: RegistrationInfoSectionProps
           id="location"
           placeholder="Ex: São Paulo, SP"
           className="w-full"
-          defaultValue={member?.city ? `${member.city}, ${member.state_address}` : ''}
+          value={formData.city ? `${formData.city}, ${formData.state_address || ''}` : ''}
+          onChange={(e) => {
+            // This is just for display - actual city and state are updated in ContactAddressSection
+            // We don't want to directly update from this field
+          }}
         />
       </div>
     </div>

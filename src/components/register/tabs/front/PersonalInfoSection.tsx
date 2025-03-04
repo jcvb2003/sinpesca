@@ -8,9 +8,11 @@ import { UF_OPTIONS } from "../../utils/constants";
 
 interface PersonalInfoSectionProps {
   member?: Member | null;
+  formData: Partial<Member>;
+  onInputChange: (field: string, value: any) => void;
 }
 
-export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
+export function PersonalInfoSection({ member, formData, onInputChange }: PersonalInfoSectionProps) {
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-medium">Dados Pessoais</h3>
@@ -21,7 +23,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="fullName"
           placeholder="Nome completo"
           className="w-full"
-          defaultValue={member?.fullName}
+          value={formData.fullName || ''}
+          onChange={(e) => onInputChange('fullName', e.target.value)}
         />
       </div>
       
@@ -31,7 +34,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="nickname"
           placeholder="Apelido (opcional)"
           className="w-full"
-          defaultValue={member?.nickname}
+          value={formData.nickname || ''}
+          onChange={(e) => onInputChange('nickname', e.target.value)}
         />
       </div>
       
@@ -43,7 +47,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
             placeholder="dd/mm/aaaa"
             type="date"
             className="w-full pl-10"
-            defaultValue={member?.birthDate ? new Date(member.birthDate).toISOString().split('T')[0] : ''}
+            value={formData.birthDate || ''}
+            onChange={(e) => onInputChange('birthDate', e.target.value)}
           />
           <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
         </div>
@@ -55,7 +60,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="fatherName"
           placeholder="Nome do pai"
           className="w-full"
-          defaultValue={member?.fatherName}
+          value={formData.fatherName || ''}
+          onChange={(e) => onInputChange('fatherName', e.target.value)}
         />
       </div>
       
@@ -65,7 +71,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="motherName"
           placeholder="Nome da mãe"
           className="w-full"
-          defaultValue={member?.motherName}
+          value={formData.motherName || ''}
+          onChange={(e) => onInputChange('motherName', e.target.value)}
         />
       </div>
       
@@ -75,7 +82,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="nationality"
           placeholder="Ex: Brasileira"
           className="w-full"
-          defaultValue={member?.nationality}
+          value={formData.nationality || ''}
+          onChange={(e) => onInputChange('nationality', e.target.value)}
         />
       </div>
       
@@ -85,13 +93,17 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="birthplace"
           placeholder="Cidade natal"
           className="w-full"
-          defaultValue={member?.birthplace}
+          value={formData.birthplace || ''}
+          onChange={(e) => onInputChange('birthplace', e.target.value)}
         />
       </div>
       
       <div className="space-y-2">
         <Label htmlFor="state">Estado (UF)</Label>
-        <Select defaultValue={member?.state || ""}>
+        <Select 
+          value={formData.state || ""} 
+          onValueChange={(value) => onInputChange('state', value)}
+        >
           <SelectTrigger id="state">
             <SelectValue placeholder="Selecione o UF" />
           </SelectTrigger>
@@ -109,7 +121,8 @@ export function PersonalInfoSection({ member }: PersonalInfoSectionProps) {
           id="profession"
           placeholder="Ex: Advogado, Médico"
           className="w-full"
-          defaultValue={member?.profession}
+          value={formData.profession || ''}
+          onChange={(e) => onInputChange('profession', e.target.value)}
         />
       </div>
     </div>

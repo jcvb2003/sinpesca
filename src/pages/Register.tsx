@@ -3,7 +3,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { RegisterForm } from "@/components/register/RegisterForm";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { members } from "@/data/mockMembers";
+import { supabase } from "@/integrations/supabase/client";
 
 const Register = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,16 +15,41 @@ const Register = () => {
     const memberId = params.get('memberId');
     
     if (memberId) {
-      const member = members.find(m => m.id === memberId);
-      if (member) {
-        setIsEditing(true);
-        setMemberName(member.fullName);
-      }
+      // Fetch member name from Supabase
+      fetchMemberName(memberId);
     } else {
       setIsEditing(false);
       setMemberName("");
     }
   }, [location.search]);
+
+  const fetchMemberName = async (memberId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('members')
+        .select('full_name')
+        .eq('id', memberId)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        setIsEditing(true);
+        setMemberName(data.full_name);
+      } else {
+        // Fallback to mock data
+        const mockMember = (await import('@/data/mockMembers')).members.find(m => m.id === memberId);
+        if (mockMember) {
+          setIsEditing(true);
+          setMemberName(mockMember.fullName);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching member name:', error);
+    }
+  };
 
   return (
     <PageLayout>

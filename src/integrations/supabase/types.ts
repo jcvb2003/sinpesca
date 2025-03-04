@@ -9,6 +9,147 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      members: {
+        Row: {
+          birth_date: string | null
+          birthplace: string | null
+          caepf: string | null
+          cei: string | null
+          city: string | null
+          cpf: string | null
+          created_at: string
+          district: string | null
+          electoral_section: string | null
+          electoral_title: string | null
+          electoral_zone: string | null
+          father_name: string | null
+          full_name: string
+          gender: string | null
+          id: string
+          inss_password: string | null
+          join_date: string | null
+          literate: boolean | null
+          marital_status: string | null
+          mother_name: string | null
+          mpa_status: string | null
+          nationality: string | null
+          nickname: string | null
+          nit: string | null
+          number: string | null
+          observations: string | null
+          phone: string | null
+          pis: string | null
+          profession: string | null
+          profile_photo: string | null
+          registration_number: string | null
+          rg: string | null
+          rg_issue_date: string | null
+          rg_uf: string | null
+          rgp_issue_date: string | null
+          rgp_number: string | null
+          rgp_state: string | null
+          state: string | null
+          state_address: string | null
+          status: string | null
+          status_control: string | null
+          street: string | null
+          updated_at: string
+          zip_code: string | null
+        }
+        Insert: {
+          birth_date?: string | null
+          birthplace?: string | null
+          caepf?: string | null
+          cei?: string | null
+          city?: string | null
+          cpf?: string | null
+          created_at?: string
+          district?: string | null
+          electoral_section?: string | null
+          electoral_title?: string | null
+          electoral_zone?: string | null
+          father_name?: string | null
+          full_name: string
+          gender?: string | null
+          id?: string
+          inss_password?: string | null
+          join_date?: string | null
+          literate?: boolean | null
+          marital_status?: string | null
+          mother_name?: string | null
+          mpa_status?: string | null
+          nationality?: string | null
+          nickname?: string | null
+          nit?: string | null
+          number?: string | null
+          observations?: string | null
+          phone?: string | null
+          pis?: string | null
+          profession?: string | null
+          profile_photo?: string | null
+          registration_number?: string | null
+          rg?: string | null
+          rg_issue_date?: string | null
+          rg_uf?: string | null
+          rgp_issue_date?: string | null
+          rgp_number?: string | null
+          rgp_state?: string | null
+          state?: string | null
+          state_address?: string | null
+          status?: string | null
+          status_control?: string | null
+          street?: string | null
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Update: {
+          birth_date?: string | null
+          birthplace?: string | null
+          caepf?: string | null
+          cei?: string | null
+          city?: string | null
+          cpf?: string | null
+          created_at?: string
+          district?: string | null
+          electoral_section?: string | null
+          electoral_title?: string | null
+          electoral_zone?: string | null
+          father_name?: string | null
+          full_name?: string
+          gender?: string | null
+          id?: string
+          inss_password?: string | null
+          join_date?: string | null
+          literate?: boolean | null
+          marital_status?: string | null
+          mother_name?: string | null
+          mpa_status?: string | null
+          nationality?: string | null
+          nickname?: string | null
+          nit?: string | null
+          number?: string | null
+          observations?: string | null
+          phone?: string | null
+          pis?: string | null
+          profession?: string | null
+          profile_photo?: string | null
+          registration_number?: string | null
+          rg?: string | null
+          rg_issue_date?: string | null
+          rg_uf?: string | null
+          rgp_issue_date?: string | null
+          rgp_number?: string | null
+          rgp_state?: string | null
+          state?: string | null
+          state_address?: string | null
+          status?: string | null
+          status_control?: string | null
+          street?: string | null
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
