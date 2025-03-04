@@ -106,7 +106,7 @@ export function RegisterForm() {
           </TabsContent>
           
           <TabsContent value="outros" className="mt-4">
-            <OtherTab member={editingMember} />
+            <OtherTab />
           </TabsContent>
           
           <div className="flex justify-end mt-8 space-x-4">
