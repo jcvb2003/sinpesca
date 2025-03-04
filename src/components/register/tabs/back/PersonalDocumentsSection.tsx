@@ -104,6 +104,7 @@ export function PersonalDocumentsSection({ member }: PersonalDocumentsSectionPro
             id="cpf"
             placeholder="000.000.000-00"
             className="w-full"
+            defaultValue={member?.cpf}
           />
         </div>
         
@@ -113,6 +114,7 @@ export function PersonalDocumentsSection({ member }: PersonalDocumentsSectionPro
             id="title"
             placeholder="Número do título de eleitor"
             className="w-full"
+            defaultValue={member?.title}
           />
         </div>
       </div>
