@@ -9,9 +9,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { DocumentSelectionDialog } from "../documents/DocumentSelectionDialog";
 import { INSSRequestDialog } from "../documents/INSSRequestDialog";
 import { RepresentationTermDialog } from "../documents/RepresentationTermDialog";
+
 interface MemberTableProps {
   members: Member[];
 }
+
 export function MemberTable({
   members
 }: MemberTableProps) {
@@ -20,19 +22,15 @@ export function MemberTable({
   const [showINSSRequest, setShowINSSRequest] = useState(false);
   const [showRepresentationTerm, setShowRepresentationTerm] = useState(false);
   const [activeMember, setActiveMember] = useState<Member | null>(null);
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const navigate = useNavigate();
+  
   const handleAction = (action: string, member: Member) => {
     if (action === "documents") {
       setActiveMember(member);
       setShowDocumentSelection(true);
     } else if (action === "edit") {
-      toast({
-        title: "Editar",
-        description: `Editando ${member.fullName}`
-      });
+      navigate(`/register?memberId=${member.id}`);
     } else if (action === "delete") {
       toast({
         title: "Excluir",
@@ -41,6 +39,7 @@ export function MemberTable({
       });
     }
   };
+  
   const handleSelectDocument = (type: string) => {
     setShowDocumentSelection(false);
     if (type === "inss") {
@@ -53,6 +52,7 @@ export function MemberTable({
       navigate(`/documents?memberId=${activeMember?.id}`);
     }
   };
+  
   return <div className="w-full overflow-hidden border rounded-lg shadow-sm bg-white animate-slideUp">
       <div className="overflow-x-auto">
         <table className="w-full">
