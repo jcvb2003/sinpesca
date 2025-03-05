@@ -1,237 +1,132 @@
-
-export type MemberStatus = 'active' | 'inactive' | 'suspended';
-
 export interface Member {
   id: string;
   registrationNumber: string;
   formerRegistrationNumber?: string;
   fullName: string;
-  nickname?: string;
   cpf: string;
-  birthDate: string;
+  profession?: string;
+  city?: string;
+  state_address?: string;
+  status: string;
+  birthDate?: string;
   fatherName?: string;
   motherName?: string;
   nationality?: string;
   birthplace?: string;
   state?: string;
-  profession?: string;
   workplace?: string;
   professionalEmail?: string;
-  profilePhoto?: string;
-  location?: string;
-
-  // Address
   street?: string;
   number?: string;
   district?: string;
-  city?: string;
-  state_address?: string;
   zipCode?: string;
   phone?: string;
   email?: string;
-
-  // Registration Data
-  registrationDate: string;
-  joinDate: string;
-  status: MemberStatus;
+  registrationDate?: string;
+  joinDate?: string;
+  location?: string;
   observations?: string;
-  
-  // Additional Registration Data
-  maritalStatus?: string;
+  nickname?: string;
   literate?: boolean;
-  rg?: string;
-  rgUf?: string;
-  rgIssueDate?: string;
-  voterTitle?: string;
-  electoralZone?: string;
-  electoralSection?: string;
-  caepf?: string;
-  gender?: string;
-  pis?: string;
-  cei?: string;
-  nit?: string;
-  rgpNumber?: string;
-  rgpIssueDate?: string;
-  rgpState?: string;
-  statusControl?: string;
-  mpaStatus?: string;
-  inssPassword?: string;
 }
 
-// Helper interface for mapping between Supabase DB fields and our frontend model
 export interface DbMember {
   id: string;
-  registration_number?: string;
+  registration_number: string | null;
   full_name: string;
-  nickname?: string;
-  cpf?: string;
-  birth_date?: string;
-  father_name?: string;
-  mother_name?: string;
-  nationality?: string;
-  birthplace?: string;
-  state?: string;
-  profession?: string;
-  profile_photo?: string;
-  location?: string;
-
-  // Address
-  street?: string;
-  number?: string;
-  district?: string;
-  city?: string;
-  state_address?: string;
-  zip_code?: string;
-  phone?: string;
-
-  // Registration Data
-  join_date?: string;
-  status?: string;
-  observations?: string;
-  
-  // Additional Registration Data
-  marital_status?: string;
+  cpf: string | null;
+  profession: string | null;
+  city: string | null;
+  state_address: string | null;
+  status: string | null;
+  birth_date: string | null;
+  father_name: string | null;
+  mother_name: string | null;
+  nationality: string | null;
+  birthplace: string | null;
+  state: string | null;
+  street: string | null;
+  number: string | null;
+  district: string | null;
+  zip_code: string | null;
+  phone: string | null;
+  created_at: string | null;
+  join_date: string | null;
+  observations: string | null;
+  nickname: string | null;
   literate?: boolean;
-  rg?: string;
-  rg_uf?: string;
-  rg_issue_date?: string;
-  electoral_title?: string;
-  electoral_zone?: string;
-  electoral_section?: string;
-  caepf?: string;
-  gender?: string;
-  pis?: string;
-  cei?: string;
-  nit?: string;
-  rgp_number?: string;
-  rgp_issue_date?: string;
-  rgp_state?: string;
-  status_control?: string;
-  mpa_status?: string;
-  inss_password?: string;
-
-  // Timestamps
-  created_at: string;
-  updated_at: string;
 }
 
-// Helper function to convert database member to frontend member
-export function dbMemberToMember(dbMember: DbMember): Member {
+export const dbMemberToMember = (dbMember: DbMember): Member => {
   return {
     id: dbMember.id,
     registrationNumber: dbMember.registration_number || '',
+    formerRegistrationNumber: '',
     fullName: dbMember.full_name,
-    nickname: dbMember.nickname,
     cpf: dbMember.cpf || '',
+    profession: dbMember.profession || '',
+    city: dbMember.city || '',
+    state_address: dbMember.state_address || '',
+    status: dbMember.status || 'active',
     birthDate: dbMember.birth_date || '',
-    fatherName: dbMember.father_name,
-    motherName: dbMember.mother_name,
-    nationality: dbMember.nationality,
-    birthplace: dbMember.birthplace,
-    state: dbMember.state,
-    profession: dbMember.profession,
-    profilePhoto: dbMember.profile_photo,
-    location: dbMember.location,
-    
-    // Address
-    street: dbMember.street,
-    number: dbMember.number,
-    district: dbMember.district,
-    city: dbMember.city,
-    state_address: dbMember.state_address,
-    zipCode: dbMember.zip_code,
-    phone: dbMember.phone,
-    email: undefined,
-    
-    // Registration
-    registrationDate: dbMember.created_at || new Date().toISOString(),
-    joinDate: dbMember.join_date || new Date().toISOString(),
-    status: (dbMember.status as MemberStatus) || 'active',
-    observations: dbMember.observations,
-    
-    // Additional fields
-    maritalStatus: dbMember.marital_status,
-    literate: dbMember.literate,
-    rg: dbMember.rg,
-    rgUf: dbMember.rg_uf,
-    rgIssueDate: dbMember.rg_issue_date,
-    voterTitle: dbMember.electoral_title,
-    electoralZone: dbMember.electoral_zone,
-    electoralSection: dbMember.electoral_section,
-    caepf: dbMember.caepf,
-    gender: dbMember.gender,
-    pis: dbMember.pis,
-    cei: dbMember.cei,
-    nit: dbMember.nit,
-    rgpNumber: dbMember.rgp_number,
-    rgpIssueDate: dbMember.rgp_issue_date,
-    rgpState: dbMember.rgp_state,
-    statusControl: dbMember.status_control,
-    mpaStatus: dbMember.mpa_status,
-    inssPassword: dbMember.inss_password,
-    workplace: undefined,
-    professionalEmail: undefined,
-    formerRegistrationNumber: undefined
+    fatherName: dbMember.father_name || '',
+    motherName: dbMember.mother_name || '',
+    nationality: dbMember.nationality || '',
+    birthplace: dbMember.birthplace || '',
+    state: dbMember.state || '',
+    workplace: '',
+    professionalEmail: '',
+    street: dbMember.street || '',
+    number: dbMember.number || '',
+    district: dbMember.district || '',
+    zipCode: dbMember.zip_code || '',
+    phone: dbMember.phone || '',
+    email: '',
+    registrationDate: dbMember.created_at || '',
+    joinDate: dbMember.join_date || '',
+    location: '',
+    observations: dbMember.observations || '',
+    nickname: dbMember.nickname || '',
   };
-}
+};
 
-// Helper function to convert frontend member to database format
-export function memberToDbMember(member: Partial<Member>): Partial<DbMember> {
-  return {
+export const memberToDbMember = (member: Partial<Member>): Partial<DbMember> => {
+  const result: Partial<DbMember> = {
     id: member.id,
     registration_number: member.registrationNumber,
     full_name: member.fullName,
-    nickname: member.nickname,
     cpf: member.cpf,
+    profession: member.profession,
+    city: member.city,
+    state_address: member.state_address,
+    status: member.status,
     birth_date: member.birthDate,
     father_name: member.fatherName,
     mother_name: member.motherName,
     nationality: member.nationality,
     birthplace: member.birthplace,
     state: member.state,
-    profession: member.profession,
-    profile_photo: member.profilePhoto,
-    location: member.location,
-    
-    // Address
     street: member.street,
     number: member.number,
     district: member.district,
-    city: member.city,
-    state_address: member.state_address,
     zip_code: member.zipCode,
     phone: member.phone,
-    
-    // Registration
-    join_date: member.joinDate,
-    status: member.status,
     observations: member.observations,
-    
-    // Additional fields
-    marital_status: member.maritalStatus,
-    literate: typeof member.literate === 'string' 
-      ? member.literate.toLowerCase() === 'sim' 
-        ? true 
-        : member.literate.toLowerCase() === 'nao' 
-          ? false 
-          : undefined
-      : member.literate,
-    rg: member.rg,
-    rg_uf: member.rgUf,
-    rg_issue_date: member.rgIssueDate,
-    electoral_title: member.voterTitle,
-    electoral_zone: member.electoralZone,
-    electoral_section: member.electoralSection,
-    caepf: member.caepf,
-    gender: member.gender,
-    pis: member.pis,
-    cei: member.cei,
-    nit: member.nit,
-    rgp_number: member.rgpNumber,
-    rgp_issue_date: member.rgpIssueDate,
-    rgp_state: member.rgpState,
-    status_control: member.statusControl,
-    mpa_status: member.mpaStatus,
-    inss_password: member.inssPassword
+    nickname: member.nickname,
+    join_date: member.joinDate,
   };
-}
+
+  // Fix for the literate field, ensuring proper type handling
+  if (typeof member.literate === 'string') {
+    if (member.literate && member.literate.toLowerCase() === 'sim') {
+      result.literate = true;
+    } else if (member.literate && member.literate.toLowerCase() === 'nao') {
+      result.literate = false;
+    }
+  } else {
+    // If it's already a boolean or undefined, use it as is
+    result.literate = member.literate;
+  }
+
+  return result;
+};

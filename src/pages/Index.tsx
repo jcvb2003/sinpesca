@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { MemberTable } from "@/components/members/MemberTable";
 import { MemberSearch } from "@/components/members/MemberSearch";
-import { members as mockMembers } from "@/data/mockMembers";
 import { Member, DbMember, dbMemberToMember } from "@/types/member";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -33,19 +32,27 @@ const Index = () => {
         // Convert DB members to frontend format
         const convertedMembers: Member[] = data.map(item => dbMemberToMember(item as DbMember));
         setMembers(convertedMembers);
+        setFilteredMembers(convertedMembers);
       } else {
-        // Fallback to mock data if no DB data
-        setMembers(mockMembers);
+        // No fallback to mock data, just set empty arrays
+        setMembers([]);
+        setFilteredMembers([]);
+        toast({
+          title: "Nenhum sócio encontrado",
+          description: "Cadastre novos sócios para visualizá-los aqui.",
+          variant: "default"
+        });
       }
     } catch (error) {
       console.error('Error fetching members:', error);
       toast({
         title: "Erro ao carregar sócios",
-        description: "Usando dados de exemplo.",
+        description: "Não foi possível carregar os dados dos sócios.",
         variant: "destructive"
       });
-      // Fallback to mock data
-      setMembers(mockMembers);
+      // No fallback to mock data
+      setMembers([]);
+      setFilteredMembers([]);
     } finally {
       setLoading(false);
     }
@@ -57,6 +64,11 @@ const Index = () => {
 
   // Filter members based on search query
   useEffect(() => {
+    if (members.length === 0) {
+      setFilteredMembers([]);
+      return;
+    }
+    
     let filtered = members;
     
     if (searchQuery.trim() !== "") {

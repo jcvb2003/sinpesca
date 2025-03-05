@@ -5,17 +5,19 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Upload, Download, LogOut, Database, Server, Key } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { members } from "@/data/mockMembers";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EntityForm } from "@/components/settings/EntityForm";
 import { ParametersForm } from "@/components/settings/ParametersForm";
 import { PasswordForm } from "@/components/settings/PasswordForm";
 import { LocationsForm } from "@/components/settings/LocationsForm";
+import { useState } from "react";
+import { Member, DbMember, dbMemberToMember } from "@/types/member";
 
 const Settings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -41,26 +43,65 @@ const Settings = () => {
     }
   };
 
-  const handleExportMembers = () => {
-    const headers = "ID,Número de Registro,Nome Completo,CPF,Profissão,Cidade,Estado,Status,Data de Nascimento\n";
-    const csvData = members.map(member => 
-      `${member.id},${member.registrationNumber},"${member.fullName}",${member.cpf},${member.profession || ''},${member.city || ''},${member.state_address || ''},${member.status},${member.birthDate}`
-    ).join("\n");
+  const handleExportMembers = async () => {
+    setIsExporting(true);
+    try {
+      // Fetch members from Supabase
+      const { data, error } = await supabase
+        .from('members')
+        .select('*');
 
-    const blob = new Blob([headers + csvData], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'membros_sindicato.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    toast({
-      title: "Exportação concluída",
-      description: "Os dados dos membros foram exportados com sucesso",
-    });
+      if (error) {
+        throw error;
+      }
+
+      if (!data || data.length === 0) {
+        toast({
+          title: "Sem dados para exportar",
+          description: "Não há sócios cadastrados para exportar.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Convert DB members to frontend format
+      const members: Member[] = data.map(item => dbMemberToMember(item as DbMember));
+
+      // Create CSV headers with all available fields
+      const headers = "ID,Número de Registro,Nome Completo,CPF,Profissão,Cidade,Estado,Status,Data de Nascimento,Apelido,Nome do Pai,Nome da Mãe,Nacionalidade,Naturalidade,Local de Trabalho,Email,Endereço,Número,Bairro,CEP,Telefone,Data de Adesão,Localidade,Observações\n";
+      
+      // Create CSV data rows
+      const csvData = members.map(member => 
+        `${member.id || ''},${member.registrationNumber || ''},"${member.fullName || ''}",${member.cpf || ''},${member.profession || ''},${member.city || ''},${member.state_address || ''},${member.status || ''},${member.birthDate || ''},${member.nickname || ''},"${member.fatherName || ''}","${member.motherName || ''}",${member.nationality || ''},${member.birthplace || ''},${member.workplace || ''},${member.email || ''},"${member.street || ''}",${member.number || ''},${member.district || ''},${member.zipCode || ''},${member.phone || ''},${member.joinDate || ''},${member.location || ''},"${member.observations || ''}"`
+      ).join("\n");
+
+      // Create a Blob with UTF-8 encoding
+      const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), headers + csvData], { type: 'text/csv;charset=utf-8;' });
+      
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'socios_cadastrados.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast({
+        title: "Exportação concluída",
+        description: "Os dados dos sócios foram exportados com sucesso",
+      });
+    } catch (error) {
+      console.error("Erro ao exportar membros:", error);
+      toast({
+        title: "Erro na exportação",
+        description: "Não foi possível exportar os dados dos sócios.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleImportData = () => {
@@ -117,9 +158,23 @@ const Settings = () => {
                     <Upload className="h-4 w-4" />
                     Importar
                   </Button>
-                  <Button onClick={handleExportMembers} variant="default" className="flex items-center gap-2">
-                    <Download className="h-4 w-4" />
-                    Exportar
+                  <Button 
+                    onClick={handleExportMembers} 
+                    variant="default" 
+                    className="flex items-center gap-2"
+                    disabled={isExporting}
+                  >
+                    {isExporting ? (
+                      <>
+                        <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
+                        Exportando...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="h-4 w-4" />
+                        Exportar
+                      </>
+                    )}
                   </Button>
                 </CardFooter>
               </Card>
