@@ -6,9 +6,11 @@ import { Member } from "@/types/member";
 
 interface MemberStatusSectionProps {
   member?: Member | null;
+  formData: Partial<Member>;
+  onInputChange: (field: string, value: any) => void;
 }
 
-export function MemberStatusSection({ member }: MemberStatusSectionProps) {
+export function MemberStatusSection({ member, formData, onInputChange }: MemberStatusSectionProps) {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -18,13 +20,17 @@ export function MemberStatusSection({ member }: MemberStatusSectionProps) {
             id="statusControl"
             placeholder="Controle da situação"
             className="w-full"
-            defaultValue={member?.statusControl}
+            value={formData.statusControl || ''}
+            onChange={(e) => onInputChange('statusControl', e.target.value)}
           />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="status">Situação</Label>
-          <Select defaultValue={member?.status || "active"}>
+          <Select 
+            value={formData.status || "active"}
+            onValueChange={(value) => onInputChange('status', value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Ativo" />
             </SelectTrigger>
@@ -44,7 +50,8 @@ export function MemberStatusSection({ member }: MemberStatusSectionProps) {
             id="mpaStatus"
             placeholder="Situação no MPA"
             className="w-full"
-            defaultValue={member?.mpaStatus}
+            value={formData.mpaStatus || ''}
+            onChange={(e) => onInputChange('mpaStatus', e.target.value)}
           />
         </div>
         
@@ -54,7 +61,8 @@ export function MemberStatusSection({ member }: MemberStatusSectionProps) {
             id="inssPassword"
             placeholder="Senha no INSS"
             className="w-full"
-            defaultValue={member?.inssPassword}
+            value={formData.inssPassword || ''}
+            onChange={(e) => onInputChange('inssPassword', e.target.value)}
           />
         </div>
       </div>

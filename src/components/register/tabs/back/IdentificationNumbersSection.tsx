@@ -5,9 +5,11 @@ import { Member } from "@/types/member";
 
 interface IdentificationNumbersSectionProps {
   member?: Member | null;
+  formData: Partial<Member>;
+  onInputChange: (field: string, value: any) => void;
 }
 
-export function IdentificationNumbersSection({ member }: IdentificationNumbersSectionProps) {
+export function IdentificationNumbersSection({ member, formData, onInputChange }: IdentificationNumbersSectionProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="space-y-2">
@@ -16,7 +18,8 @@ export function IdentificationNumbersSection({ member }: IdentificationNumbersSe
           id="pis"
           placeholder="Número do PIS"
           className="w-full"
-          defaultValue={member?.pis}
+          value={formData.pis || ''}
+          onChange={(e) => onInputChange('pis', e.target.value)}
         />
       </div>
       
@@ -26,7 +29,8 @@ export function IdentificationNumbersSection({ member }: IdentificationNumbersSe
           id="cei"
           placeholder="CEI"
           className="w-full"
-          defaultValue={member?.cei}
+          value={formData.cei || ''}
+          onChange={(e) => onInputChange('cei', e.target.value)}
         />
       </div>
       
@@ -36,7 +40,8 @@ export function IdentificationNumbersSection({ member }: IdentificationNumbersSe
           id="nit"
           placeholder="NIT"
           className="w-full"
-          defaultValue={member?.nit}
+          value={formData.nit || ''}
+          onChange={(e) => onInputChange('nit', e.target.value)}
         />
       </div>
     </div>

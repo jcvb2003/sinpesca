@@ -8,7 +8,7 @@ import { OtherTab } from "./tabs/OtherTab";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import { members } from "@/data/mockMembers";
-import { Member } from "@/types/member";
+import { Member, DbMember, dbMemberToMember, memberToDbMember } from "@/types/member";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -56,8 +56,9 @@ export function RegisterForm() {
       }
 
       if (data) {
-        setEditingMember(data as Member);
-        setFormData(data);
+        const convertedMember = dbMemberToMember(data as DbMember);
+        setEditingMember(convertedMember);
+        setFormData(convertedMember);
       } else {
         // Fallback to mockdata if not found in database
         const mockMember = members.find(m => m.id === memberId);
@@ -90,11 +91,14 @@ export function RegisterForm() {
     setLoading(true);
 
     try {
+      // Convert frontend model to database format
+      const dbData = memberToDbMember(formData);
+      
       if (editingMember) {
         // Update existing member
         const { error } = await supabase
           .from('members')
-          .update(formData)
+          .update(dbData)
           .eq('id', editingMember.id);
 
         if (error) throw error;
@@ -104,10 +108,25 @@ export function RegisterForm() {
           description: "As informações do sócio foram atualizadas com sucesso!"
         });
       } else {
+        // Create new member with required fields
+        if (!formData.fullName) {
+          toast({
+            title: "Erro ao salvar",
+            description: "Nome completo é obrigatório",
+            variant: "destructive"
+          });
+          setLoading(false);
+          return;
+        }
+
         // Create new member
         const { error } = await supabase
           .from('members')
-          .insert([{ ...formData, full_name: formData.fullName }]);
+          .insert([{ 
+            ...dbData,
+            full_name: formData.fullName, 
+            status: formData.status || 'active'
+          }]);
 
         if (error) throw error;
 

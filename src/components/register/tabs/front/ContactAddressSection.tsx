@@ -8,9 +8,11 @@ import { UF_OPTIONS } from "../../utils/constants";
 
 interface ContactAddressSectionProps {
   member?: Member | null;
+  formData: Partial<Member>;
+  onInputChange: (field: string, value: any) => void;
 }
 
-export function ContactAddressSection({ member }: ContactAddressSectionProps) {
+export function ContactAddressSection({ member, formData, onInputChange }: ContactAddressSectionProps) {
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-medium">Endereço e Contato</h3>
@@ -21,7 +23,8 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
           id="street"
           placeholder="Nome da rua"
           className="w-full"
-          defaultValue={member?.street}
+          value={formData.street || ''}
+          onChange={(e) => onInputChange('street', e.target.value)}
         />
       </div>
       
@@ -31,7 +34,8 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
           id="number"
           placeholder="Número"
           className="w-full"
-          defaultValue={member?.number}
+          value={formData.number || ''}
+          onChange={(e) => onInputChange('number', e.target.value)}
         />
       </div>
       
@@ -41,7 +45,8 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
           id="district"
           placeholder="Bairro"
           className="w-full"
-          defaultValue={member?.district}
+          value={formData.district || ''}
+          onChange={(e) => onInputChange('district', e.target.value)}
         />
       </div>
       
@@ -51,14 +56,18 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
           id="city"
           placeholder="Cidade"
           className="w-full"
-          defaultValue={member?.city}
+          value={formData.city || ''}
+          onChange={(e) => onInputChange('city', e.target.value)}
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="stateAddress">Estado (UF)</Label>
-        <Select defaultValue={member?.state_address || ""}>
-          <SelectTrigger id="stateAddress">
+        <Label htmlFor="state_address">Estado (UF)</Label>
+        <Select 
+          value={formData.state_address || ""}
+          onValueChange={(value) => onInputChange('state_address', value)}
+        >
+          <SelectTrigger id="state_address">
             <SelectValue placeholder="Selecione o UF" />
           </SelectTrigger>
           <SelectContent>
@@ -75,7 +84,8 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
           id="zipCode"
           placeholder="00000-000"
           className="w-full"
-          defaultValue={member?.zipCode}
+          value={formData.zipCode || ''}
+          onChange={(e) => onInputChange('zipCode', e.target.value)}
         />
       </div>
       
@@ -85,7 +95,8 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
           id="phone"
           placeholder="(00) 00000-0000"
           className="w-full"
-          defaultValue={member?.phone}
+          value={formData.phone || ''}
+          onChange={(e) => onInputChange('phone', e.target.value)}
         />
       </div>
       
@@ -93,9 +104,9 @@ export function ContactAddressSection({ member }: ContactAddressSectionProps) {
         <Label htmlFor="profilePhoto">Foto de Perfil</Label>
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 bg-gray-100 border rounded-md flex items-center justify-center overflow-hidden">
-            {member?.profilePhoto ? (
+            {formData.profilePhoto ? (
               <img 
-                src={member.profilePhoto} 
+                src={formData.profilePhoto} 
                 alt="Foto do perfil" 
                 className="w-full h-full object-cover"
               />
