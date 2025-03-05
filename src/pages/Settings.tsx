@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EntityForm } from "@/components/settings/EntityForm";
 import { ParametersForm } from "@/components/settings/ParametersForm";
 import { PasswordForm } from "@/components/settings/PasswordForm";
+import { LocationsForm } from "@/components/settings/LocationsForm";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -94,13 +95,13 @@ const Settings = () => {
           </TabsList>
 
           <TabsContent value="data">
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="shadow-md">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2">
                     <Upload className="h-5 w-5 text-primary" />
                     <Download className="h-5 w-5 text-primary" />
-                    Importar ou Exportar Sócios
+                    Importar ou Exportar
                   </CardTitle>
                   <CardDescription>
                     Importe ou exporte dados dos sócios
@@ -120,6 +121,26 @@ const Settings = () => {
                     <Download className="h-4 w-4" />
                     Exportar
                   </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card className="shadow-md">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="h-5 w-5 text-primary" />
+                    Localidades
+                  </CardTitle>
+                  <CardDescription>
+                    Cadastre as localidades utilizadas no sistema
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0 pb-2">
+                  <p className="text-sm text-gray-500">
+                    Gerencie as localidades que serão disponíveis para seleção no cadastro de sócios.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <LocationsForm />
                 </CardFooter>
               </Card>
             </div>

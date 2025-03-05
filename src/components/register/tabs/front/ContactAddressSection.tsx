@@ -13,6 +13,8 @@ interface ContactAddressSectionProps {
 }
 
 export function ContactAddressSection({ member, formData, onInputChange }: ContactAddressSectionProps) {
+  // No need to modify the component directly as the uppercase transformation
+  // will be handled by the handleInputChange function in RegisterForm.tsx
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-medium">Endereço e Contato</h3>

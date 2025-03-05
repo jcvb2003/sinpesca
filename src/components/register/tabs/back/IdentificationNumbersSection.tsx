@@ -10,6 +10,7 @@ interface IdentificationNumbersSectionProps {
 }
 
 export function IdentificationNumbersSection({ member, formData, onInputChange }: IdentificationNumbersSectionProps) {
+  // The uppercase conversion will be handled by the RegisterForm component
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="space-y-2">

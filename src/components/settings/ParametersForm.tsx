@@ -4,32 +4,75 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+// Define the parameters type
+export interface SystemParameters {
+  publicationNumber: string;
+  publicationDate: string;
+  fishingArea: string;
+  firstPeriodStart: string;
+  firstPeriodEnd: string;
+  secondPeriodStart: string;
+  secondPeriodEnd: string;
+  prohibitedSpecies: string;
+  fishingLocation: string;
+  situation6: string;
+  situation7: string;
+  situation8: string;
+  situation9: string;
+  situation10: string;
+}
+
+// Default parameters
+const defaultParameters: SystemParameters = {
+  publicationNumber: "048",
+  publicationDate: "06/11/2007",
+  fishingArea: "BACIA AMAZÔNICA DA ILHA DO MARAJÓ",
+  firstPeriodStart: "01/01/2025",
+  firstPeriodEnd: "30/04/2025",
+  secondPeriodStart: "",
+  secondPeriodEnd: "",
+  prohibitedSpecies: "ACARÁ, ARACU, TRAIRA ETC.",
+  fishingLocation: "PROPRIEDADE DA UNIÃO",
+  situation6: "6 - SUSPENSO",
+  situation7: "",
+  situation8: "",
+  situation9: "",
+  situation10: ""
+};
 
 export function ParametersForm() {
   const { toast } = useToast();
-  const [parameters, setParameters] = useState({
-    publicationNumber: "048",
-    publicationDate: "06/11/2007",
-    fishingArea: "BACIA AMAZÔNICA DA ILHA DO MARAJÓ",
-    firstPeriodStart: "01/01/2025",
-    firstPeriodEnd: "30/04/2025",
-    secondPeriodStart: "",
-    secondPeriodEnd: "",
-    prohibitedSpecies: "ACARÁ, ARACU, TRAIRA ETC.",
-    fishingLocation: "PROPRIEDADE DA UNIÃO",
-    situation6: "6 - SUSPENSO",
-    situation7: "",
-    situation8: "",
-    situation9: "",
-    situation10: ""
-  });
+  const [parameters, setParameters] = useState<SystemParameters>(defaultParameters);
+  
+  // Load parameters from localStorage on component mount
+  useEffect(() => {
+    const savedParameters = localStorage.getItem('systemParameters');
+    if (savedParameters) {
+      try {
+        setParameters(JSON.parse(savedParameters));
+      } catch (error) {
+        console.error('Error parsing saved parameters:', error);
+      }
+    }
+  }, []);
 
   const handleChange = (field: string, value: string) => {
-    setParameters(prev => ({ ...prev, [field]: value }));
+    setParameters(prev => {
+      const updatedParams = { 
+        ...prev, 
+        [field]: field === 'email' ? value.toLowerCase() : value.toUpperCase() 
+      };
+      return updatedParams;
+    });
   };
 
   const handleSave = () => {
+    // Save to localStorage for persistence
+    localStorage.setItem('systemParameters', JSON.stringify(parameters));
+    
     toast({
       title: "Parâmetros atualizados",
       description: "Os parâmetros foram salvos com sucesso!"

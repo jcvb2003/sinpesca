@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "lucide-react";
 import { Member } from "@/types/member";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useEffect, useState } from "react";
 
 interface RegistrationInfoSectionProps {
   member?: Member | null;
@@ -11,6 +13,20 @@ interface RegistrationInfoSectionProps {
 }
 
 export function RegistrationInfoSection({ member, formData, onInputChange }: RegistrationInfoSectionProps) {
+  const [locations, setLocations] = useState<string[]>([]);
+  
+  // Load locations from localStorage
+  useEffect(() => {
+    const savedLocations = localStorage.getItem('systemLocations');
+    if (savedLocations) {
+      try {
+        setLocations(JSON.parse(savedLocations));
+      } catch (error) {
+        console.error('Error parsing saved locations:', error);
+      }
+    }
+  }, []);
+
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-medium">Informações de Registro</h3>
@@ -43,16 +59,29 @@ export function RegistrationInfoSection({ member, formData, onInputChange }: Reg
       
       <div className="space-y-2">
         <Label htmlFor="location">Localidade</Label>
-        <Input
-          id="location"
-          placeholder="Ex: São Paulo, SP"
-          className="w-full"
-          value={formData.city ? `${formData.city}, ${formData.state_address || ''}` : ''}
-          onChange={(e) => {
-            // This is just for display - actual city and state are updated in ContactAddressSection
-            // We don't want to directly update from this field
-          }}
-        />
+        {locations.length > 0 ? (
+          <Select 
+            value={formData.birthplace || ''}
+            onValueChange={(value) => onInputChange('birthplace', value)}
+          >
+            <SelectTrigger id="location" className="w-full">
+              <SelectValue placeholder="Selecione a localidade" />
+            </SelectTrigger>
+            <SelectContent>
+              {locations.map((location, index) => (
+                <SelectItem key={index} value={location}>{location}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          <Input
+            id="location"
+            placeholder="Ex: RIO ARATICU"
+            className="w-full"
+            value={formData.birthplace || ''}
+            onChange={(e) => onInputChange('birthplace', e.target.value)}
+          />
+        )}
       </div>
     </div>
   );

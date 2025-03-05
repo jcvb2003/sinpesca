@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -37,7 +36,6 @@ export function RegisterForm() {
     const memberId = params.get('memberId');
     
     if (memberId) {
-      // First try to get data from Supabase
       fetchMemberData(memberId);
     }
   }, [location.search]);
@@ -60,7 +58,6 @@ export function RegisterForm() {
         setEditingMember(convertedMember);
         setFormData(convertedMember);
       } else {
-        // Fallback to mockdata if not found in database
         const mockMember = members.find(m => m.id === memberId);
         if (mockMember) {
           setEditingMember(mockMember);
@@ -80,9 +77,18 @@ export function RegisterForm() {
   };
 
   const handleInputChange = (section: string, field: string, value: any) => {
+    let formattedValue = value;
+    if (typeof value === 'string') {
+      if (field === 'email' || field === 'professionalEmail') {
+        formattedValue = value.toLowerCase();
+      } else {
+        formattedValue = value.toUpperCase();
+      }
+    }
+
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: formattedValue
     }));
   };
 
@@ -91,11 +97,9 @@ export function RegisterForm() {
     setLoading(true);
 
     try {
-      // Convert frontend model to database format
       const dbData = memberToDbMember(formData);
       
       if (editingMember) {
-        // Update existing member
         const { error } = await supabase
           .from('members')
           .update(dbData)
@@ -108,7 +112,6 @@ export function RegisterForm() {
           description: "As informações do sócio foram atualizadas com sucesso!"
         });
       } else {
-        // Create new member with required fields
         if (!formData.fullName) {
           toast({
             title: "Erro ao salvar",
@@ -119,11 +122,13 @@ export function RegisterForm() {
           return;
         }
 
-        // Create new member
+        const newMemberId = crypto.randomUUID();
+        
         const { error } = await supabase
           .from('members')
           .insert([{ 
             ...dbData,
+            id: newMemberId,
             full_name: formData.fullName, 
             status: formData.status || 'active'
           }]);
