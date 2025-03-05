@@ -7,10 +7,14 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 
 interface MemberSearchProps {
   onSearch: (query: string) => void;
+  onFilterChange: (status: string[]) => void;
+  onSortChange: (sortBy: string) => void;
 }
 
 export function MemberSearch({
-  onSearch
+  onSearch,
+  onFilterChange,
+  onSortChange
 }: MemberSearchProps) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<string[]>([]);
@@ -24,10 +28,37 @@ export function MemberSearch({
     return () => clearTimeout(debounceTimeout);
   }, [query, onSearch]);
   
-  return <div className="flex gap-2">
+  useEffect(() => {
+    onFilterChange(status);
+  }, [status, onFilterChange]);
+
+  useEffect(() => {
+    onSortChange(sortBy);
+  }, [sortBy, onSortChange]);
+
+  const handleStatusChange = (statusValue: string, checked: boolean) => {
+    if (checked) {
+      setStatus(prev => [...prev, statusValue]);
+    } else {
+      setStatus(prev => prev.filter(s => s !== statusValue));
+    }
+  };
+
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
+  };
+  
+  return (
+    <div className="flex gap-2">
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-        <Input type="text" placeholder="Buscar por nome, número de registro ou profissão..." value={query} onChange={e => setQuery(e.target.value)} className="pl-10 py-6 w-full bg-white border-gray-300 rounded-lg focus:ring-primary focus:border-primary" />
+        <Input 
+          type="text" 
+          placeholder="Buscar por nome, número de registro ou profissão..." 
+          value={query} 
+          onChange={e => setQuery(e.target.value)} 
+          className="pl-10 py-6 w-full bg-white border-gray-300 rounded-lg focus:ring-primary focus:border-primary" 
+        />
       </div>
       
       <DropdownMenu>
@@ -40,20 +71,23 @@ export function MemberSearch({
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>Status</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem checked={status.includes("active")} onCheckedChange={checked => {
-          if (checked) setStatus([...status, "active"]);else setStatus(status.filter(s => s !== "active"));
-        }}>
+          <DropdownMenuCheckboxItem 
+            checked={status.includes("active")} 
+            onCheckedChange={checked => handleStatusChange("active", checked)}
+          >
             Ativo
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={status.includes("inactive")} onCheckedChange={checked => {
-          if (checked) setStatus([...status, "inactive"]);else setStatus(status.filter(s => s !== "inactive"));
-        }}>
+          <DropdownMenuCheckboxItem 
+            checked={status.includes("inactive")} 
+            onCheckedChange={checked => handleStatusChange("inactive", checked)}
+          >
             Inativo
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={status.includes("pending")} onCheckedChange={checked => {
-          if (checked) setStatus([...status, "pending"]);else setStatus(status.filter(s => s !== "pending"));
-        }}>
-            Pendente
+          <DropdownMenuCheckboxItem 
+            checked={status.includes("suspended")} 
+            onCheckedChange={checked => handleStatusChange("suspended", checked)}
+          >
+            Suspenso
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -67,22 +101,32 @@ export function MemberSearch({
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>Ordenar por</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem checked={sortBy === "name"} onCheckedChange={checked => {
-          if (checked) setSortBy("name");
-        }}>
+          <DropdownMenuCheckboxItem 
+            checked={sortBy === "name"} 
+            onCheckedChange={checked => {
+              if (checked) handleSortChange("name");
+            }}
+          >
             Nome
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={sortBy === "registration"} onCheckedChange={checked => {
-          if (checked) setSortBy("registration");
-        }}>
+          <DropdownMenuCheckboxItem 
+            checked={sortBy === "registration"} 
+            onCheckedChange={checked => {
+              if (checked) handleSortChange("registration");
+            }}
+          >
             Nº de Registro
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={sortBy === "date"} onCheckedChange={checked => {
-          if (checked) setSortBy("date");
-        }}>
+          <DropdownMenuCheckboxItem 
+            checked={sortBy === "date"} 
+            onCheckedChange={checked => {
+              if (checked) handleSortChange("date");
+            }}
+          >
             Data de Adesão
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>;
+    </div>
+  );
 }

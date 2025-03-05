@@ -18,6 +18,7 @@ export interface Member {
   workplace?: string;
   professionalEmail?: string;
   profilePhoto?: string;
+  location?: string;
 
   // Address
   street?: string;
@@ -72,6 +73,7 @@ export interface DbMember {
   state?: string;
   profession?: string;
   profile_photo?: string;
+  location?: string;
 
   // Address
   street?: string;
@@ -129,6 +131,7 @@ export function dbMemberToMember(dbMember: DbMember): Member {
     state: dbMember.state,
     profession: dbMember.profession,
     profilePhoto: dbMember.profile_photo,
+    location: dbMember.location,
     
     // Address
     street: dbMember.street,
@@ -188,6 +191,7 @@ export function memberToDbMember(member: Partial<Member>): Partial<DbMember> {
     state: member.state,
     profession: member.profession,
     profile_photo: member.profilePhoto,
+    location: member.location,
     
     // Address
     street: member.street,
@@ -206,9 +210,9 @@ export function memberToDbMember(member: Partial<Member>): Partial<DbMember> {
     // Additional fields
     marital_status: member.maritalStatus,
     literate: typeof member.literate === 'string' 
-      ? member.literate === 'sim' 
+      ? member.literate.toLowerCase() === 'sim' 
         ? true 
-        : member.literate === 'nao' 
+        : member.literate.toLowerCase() === 'nao' 
           ? false 
           : undefined
       : member.literate,

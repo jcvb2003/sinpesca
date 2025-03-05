@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -21,15 +22,42 @@ import {
 import { Save, X, Trash } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
+// Custom useForm hook for this specific form
+const useForm = (initialValues: Partial<Member>) => {
+  const [formData, setFormData] = useState<Partial<Member>>(initialValues);
+
+  const handleInputChange = (field: string, value: any) => {
+    let formattedValue = value;
+    
+    // Format value based on field type
+    if (typeof value === 'string') {
+      if (field === 'email' || field === 'professionalEmail') {
+        formattedValue = value.toLowerCase();
+      } else {
+        formattedValue = value.toUpperCase();
+      }
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      [field]: formattedValue
+    }));
+  };
+
+  return { formData, setFormData, handleInputChange };
+};
+
 export function RegisterForm() {
   const [activeTab, setActiveTab] = useState("frente");
   const [editingMember, setEditingMember] = useState<Member | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [formData, setFormData] = useState<Partial<Member>>({});
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Initialize form with empty object
+  const { formData, setFormData, handleInputChange } = useForm({});
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -71,25 +99,16 @@ export function RegisterForm() {
         description: "Não foi possível carregar os dados do sócio.",
         variant: "destructive"
       });
+      
+      // Try to load from mock data
+      const mockMember = members.find(m => m.id === memberId);
+      if (mockMember) {
+        setEditingMember(mockMember);
+        setFormData(mockMember);
+      }
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleInputChange = (section: string, field: string, value: any) => {
-    let formattedValue = value;
-    if (typeof value === 'string') {
-      if (field === 'email' || field === 'professionalEmail') {
-        formattedValue = value.toLowerCase();
-      } else {
-        formattedValue = value.toUpperCase();
-      }
-    }
-
-    setFormData(prev => ({
-      ...prev,
-      [field]: formattedValue
-    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,6 +116,16 @@ export function RegisterForm() {
     setLoading(true);
 
     try {
+      if (!formData.fullName) {
+        toast({
+          title: "Erro ao salvar",
+          description: "Nome completo é obrigatório",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+
       const dbData = memberToDbMember(formData);
       
       if (editingMember) {
@@ -112,26 +141,17 @@ export function RegisterForm() {
           description: "As informações do sócio foram atualizadas com sucesso!"
         });
       } else {
-        if (!formData.fullName) {
-          toast({
-            title: "Erro ao salvar",
-            description: "Nome completo é obrigatório",
-            variant: "destructive"
-          });
-          setLoading(false);
-          return;
-        }
-
+        // Generate a unique ID for the new member
         const newMemberId = crypto.randomUUID();
         
         const { error } = await supabase
           .from('members')
-          .insert([{ 
+          .insert({
             ...dbData,
             id: newMemberId,
-            full_name: formData.fullName, 
+            full_name: formData.fullName,
             status: formData.status || 'active'
-          }]);
+          });
 
         if (error) throw error;
 
@@ -220,7 +240,7 @@ export function RegisterForm() {
             <FrontTab 
               member={editingMember} 
               formData={formData} 
-              onInputChange={handleInputChange} 
+              onInputChange={(field, value) => handleInputChange(field, value)} 
             />
           </TabsContent>
           
@@ -228,14 +248,14 @@ export function RegisterForm() {
             <BackTab 
               member={editingMember} 
               formData={formData} 
-              onInputChange={handleInputChange} 
+              onInputChange={(field, value) => handleInputChange(field, value)} 
             />
           </TabsContent>
           
           <TabsContent value="outros" className="mt-4">
             <OtherTab 
               formData={formData} 
-              onInputChange={handleInputChange} 
+              onInputChange={(field, value) => handleInputChange(field, value)} 
             />
           </TabsContent>
           
