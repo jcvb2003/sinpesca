@@ -205,7 +205,13 @@ export function memberToDbMember(member: Partial<Member>): Partial<DbMember> {
     
     // Additional fields
     marital_status: member.maritalStatus,
-    literate: member.literate === 'sim' ? true : member.literate === 'nao' ? false : member.literate,
+    literate: typeof member.literate === 'string' 
+      ? member.literate === 'sim' 
+        ? true 
+        : member.literate === 'nao' 
+          ? false 
+          : undefined
+      : member.literate,
     rg: member.rg,
     rg_uf: member.rgUf,
     rg_issue_date: member.rgIssueDate,
