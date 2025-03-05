@@ -9,7 +9,7 @@ import { MemberStatusSection } from "./back/MemberStatusSection";
 interface BackTabProps {
   member?: Member | null;
   formData: Partial<Member>;
-  onInputChange: (section: string, field: string, value: any) => void;
+  onInputChange: (field: string, value: any) => void;
 }
 
 export function BackTab({ member, formData, onInputChange }: BackTabProps) {
@@ -18,27 +18,27 @@ export function BackTab({ member, formData, onInputChange }: BackTabProps) {
       <PersonalDocumentsSection 
         member={member}
         formData={formData}
-        onInputChange={(field, value) => onInputChange('documents', field, value)} 
+        onInputChange={onInputChange} 
       />
       <ElectoralInfoSection 
         member={member}
         formData={formData}
-        onInputChange={(field, value) => onInputChange('electoral', field, value)} 
+        onInputChange={onInputChange} 
       />
       <IdentificationNumbersSection 
         member={member}
         formData={formData}
-        onInputChange={(field, value) => onInputChange('identification', field, value)} 
+        onInputChange={onInputChange} 
       />
       <FishingRegistrationSection 
         member={member}
         formData={formData}
-        onInputChange={(field, value) => onInputChange('fishing', field, value)} 
+        onInputChange={onInputChange} 
       />
       <MemberStatusSection 
         member={member}
         formData={formData}
-        onInputChange={(field, value) => onInputChange('status', field, value)} 
+        onInputChange={onInputChange} 
       />
     </div>
   );

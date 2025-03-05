@@ -7,7 +7,7 @@ import { ContactAddressSection } from "./front/ContactAddressSection";
 interface FrontTabProps {
   member?: Member | null;
   formData: Partial<Member>;
-  onInputChange: (section: string, field: string, value: any) => void;
+  onInputChange: (field: string, value: any) => void;
 }
 
 export function FrontTab({ member, formData, onInputChange }: FrontTabProps) {
@@ -16,17 +16,17 @@ export function FrontTab({ member, formData, onInputChange }: FrontTabProps) {
       <RegistrationInfoSection 
         member={member} 
         formData={formData} 
-        onInputChange={(field, value) => onInputChange('registration', field, value)} 
+        onInputChange={onInputChange} 
       />
       <PersonalInfoSection 
         member={member} 
         formData={formData} 
-        onInputChange={(field, value) => onInputChange('personal', field, value)} 
+        onInputChange={onInputChange} 
       />
       <ContactAddressSection 
         member={member} 
         formData={formData} 
-        onInputChange={(field, value) => onInputChange('contact', field, value)} 
+        onInputChange={onInputChange} 
       />
     </div>
   );

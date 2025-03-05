@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface OtherTabProps {
   formData: Partial<Member>;
-  onInputChange: (section: string, field: string, value: any) => void;
+  onInputChange: (field: string, value: any) => void;
 }
 
 export function OtherTab({ formData, onInputChange }: OtherTabProps) {
@@ -18,7 +18,7 @@ export function OtherTab({ formData, onInputChange }: OtherTabProps) {
           placeholder="Adicione observações relevantes sobre o sócio aqui..."
           className="min-h-[200px]"
           value={formData.observations || ''}
-          onChange={(e) => onInputChange('other', 'observations', e.target.value)}
+          onChange={(e) => onInputChange('observations', e.target.value)}
         />
       </div>
     </div>
