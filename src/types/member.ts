@@ -1,3 +1,6 @@
+
+export type MemberStatus = "active" | "inactive" | "suspended";
+
 export interface Member {
   id: string;
   registrationNumber: string;
@@ -7,7 +10,7 @@ export interface Member {
   profession?: string;
   city?: string;
   state_address?: string;
-  status: string;
+  status: MemberStatus;
   birthDate?: string;
   fatherName?: string;
   motherName?: string;
@@ -28,6 +31,26 @@ export interface Member {
   observations?: string;
   nickname?: string;
   literate?: boolean;
+  // Additional fields referenced in components
+  profilePhoto?: string;
+  rg?: string;
+  rgUf?: string;
+  rgIssueDate?: string;
+  gender?: string;
+  maritalStatus?: string;
+  voterTitle?: string;
+  electoralZone?: string;
+  electoralSection?: string;
+  caepf?: string;
+  pis?: string;
+  cei?: string;
+  nit?: string;
+  rgpNumber?: string;
+  rgpIssueDate?: string;
+  rgpState?: string;
+  statusControl?: string;
+  mpaStatus?: string;
+  inssPassword?: string;
 }
 
 export interface DbMember {
@@ -55,6 +78,26 @@ export interface DbMember {
   observations: string | null;
   nickname: string | null;
   literate?: boolean;
+  // Additional DB fields mapped from the Member interface
+  profile_photo?: string | null;
+  rg?: string | null;
+  rg_uf?: string | null;
+  rg_issue_date?: string | null;
+  gender?: string | null;
+  marital_status?: string | null;
+  voter_title?: string | null;
+  electoral_zone?: string | null;
+  electoral_section?: string | null;
+  caepf?: string | null;
+  pis?: string | null;
+  cei?: string | null;
+  nit?: string | null;
+  rgp_number?: string | null;
+  rgp_issue_date?: string | null;
+  rgp_state?: string | null;
+  status_control?: string | null;
+  mpa_status?: string | null;
+  inss_password?: string | null;
 }
 
 export const dbMemberToMember = (dbMember: DbMember): Member => {
@@ -67,7 +110,7 @@ export const dbMemberToMember = (dbMember: DbMember): Member => {
     profession: dbMember.profession || '',
     city: dbMember.city || '',
     state_address: dbMember.state_address || '',
-    status: dbMember.status || 'active',
+    status: (dbMember.status || 'active') as MemberStatus,
     birthDate: dbMember.birth_date || '',
     fatherName: dbMember.father_name || '',
     motherName: dbMember.mother_name || '',
@@ -87,6 +130,27 @@ export const dbMemberToMember = (dbMember: DbMember): Member => {
     location: '',
     observations: dbMember.observations || '',
     nickname: dbMember.nickname || '',
+    literate: dbMember.literate,
+    // Additional fields
+    profilePhoto: dbMember.profile_photo || '',
+    rg: dbMember.rg || '',
+    rgUf: dbMember.rg_uf || '',
+    rgIssueDate: dbMember.rg_issue_date || '',
+    gender: dbMember.gender || '',
+    maritalStatus: dbMember.marital_status || '',
+    voterTitle: dbMember.voter_title || '',
+    electoralZone: dbMember.electoral_zone || '',
+    electoralSection: dbMember.electoral_section || '',
+    caepf: dbMember.caepf || '',
+    pis: dbMember.pis || '',
+    cei: dbMember.cei || '',
+    nit: dbMember.nit || '',
+    rgpNumber: dbMember.rgp_number || '',
+    rgpIssueDate: dbMember.rgp_issue_date || '',
+    rgpState: dbMember.rgp_state || '',
+    statusControl: dbMember.status_control || '',
+    mpaStatus: dbMember.mpa_status || '',
+    inssPassword: dbMember.inss_password || '',
   };
 };
 
@@ -114,13 +178,33 @@ export const memberToDbMember = (member: Partial<Member>): Partial<DbMember> => 
     observations: member.observations,
     nickname: member.nickname,
     join_date: member.joinDate,
+    // Additional fields
+    profile_photo: member.profilePhoto,
+    rg: member.rg,
+    rg_uf: member.rgUf,
+    rg_issue_date: member.rgIssueDate,
+    gender: member.gender,
+    marital_status: member.maritalStatus,
+    voter_title: member.voterTitle,
+    electoral_zone: member.electoralZone,
+    electoral_section: member.electoralSection,
+    caepf: member.caepf,
+    pis: member.pis,
+    cei: member.cei,
+    nit: member.nit,
+    rgp_number: member.rgpNumber,
+    rgp_issue_date: member.rgpIssueDate,
+    rgp_state: member.rgpState,
+    status_control: member.statusControl,
+    mpa_status: member.mpaStatus,
+    inss_password: member.inssPassword,
   };
 
   // Fix for the literate field, ensuring proper type handling
   if (typeof member.literate === 'string') {
-    if (member.literate && member.literate.toLowerCase() === 'sim') {
+    if (member.literate === 'sim') {
       result.literate = true;
-    } else if (member.literate && member.literate.toLowerCase() === 'nao') {
+    } else if (member.literate === 'nao') {
       result.literate = false;
     }
   } else {
