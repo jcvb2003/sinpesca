@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Member } from "@/types/member";
@@ -12,13 +11,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { DocumentSelectionDialog } from "../documents/DocumentSelectionDialog";
 import { INSSRequestDialog } from "../documents/INSSRequestDialog";
 import { RepresentationTermDialog } from "../documents/RepresentationTermDialog";
-
 interface MemberTableProps {
   members: Member[];
   filteredStatus?: string[];
   sortBy?: string;
 }
-
 export function MemberTable({
   members,
   filteredStatus,
@@ -31,14 +28,13 @@ export function MemberTable({
   const [activeMember, setActiveMember] = useState<Member | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const navigate = useNavigate();
 
   // Filter members if filteredStatus array is provided
-  const statusFilteredMembers = filteredStatus && filteredStatus.length > 0
-    ? members.filter(member => filteredStatus.includes(member.status))
-    : members;
+  const statusFilteredMembers = filteredStatus && filteredStatus.length > 0 ? members.filter(member => filteredStatus.includes(member.status)) : members;
 
   // Sort members based on sortBy
   const sortedMembers = [...statusFilteredMembers].sort((a, b) => {
@@ -57,7 +53,6 @@ export function MemberTable({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedMembers = sortedMembers.slice(startIndex, endIndex);
-
   const handleAction = (action: string, member: Member) => {
     if (action === "documents") {
       setActiveMember(member);
@@ -76,7 +71,6 @@ export function MemberTable({
       });
     }
   };
-
   const handleSelectDocument = (type: string) => {
     setShowDocumentSelection(false);
     if (type === "inss") {
@@ -89,20 +83,16 @@ export function MemberTable({
       navigate(`/documents?memberId=${activeMember?.id}`);
     }
   };
-
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
-
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(Number(value));
     setCurrentPage(1); // Reset to first page when changing items per page
   };
-
-  return (
-    <div className="w-full overflow-hidden border rounded-lg shadow-sm bg-white animate-slideUp">
+  return <div className="w-full overflow-hidden border rounded-lg shadow-sm bg-white animate-slideUp">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
@@ -117,11 +107,7 @@ export function MemberTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {displayedMembers.map(member => (
-              <TableRow 
-                key={member.id} 
-                className="border-b hover:bg-gray-50 transition-colors cursor-pointer"
-              >
+            {displayedMembers.map(member => <TableRow key={member.id} className="border-b hover:bg-gray-50 transition-colors cursor-pointer">
                 <TableCell className="px-4 py-3 text-sm" onClick={() => setSelectedMember(member)}>
                   <div>
                     {member.registrationNumber}
@@ -145,47 +131,29 @@ export function MemberTable({
                 </TableCell>
                 <TableCell className="px-4 py-3">
                   <div className="flex space-x-2">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleAction("documents", member);
-                      }} 
-                      className="h-8 w-8 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-                    >
+                    <Button variant="ghost" size="icon" onClick={e => {
+                  e.stopPropagation();
+                  handleAction("documents", member);
+                }} className="h-8 w-8 text-blue-600 hover:text-blue-800 hover:bg-blue-50">
                       <FileText size={18} />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleAction("edit", member);
-                      }} 
-                      className="h-8 w-8 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-                    >
+                    <Button variant="ghost" size="icon" onClick={e => {
+                  e.stopPropagation();
+                  handleAction("edit", member);
+                }} className="h-8 w-8 text-blue-600 hover:text-blue-800 hover:bg-blue-50">
                       <Pencil size={18} />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleAction("delete", member);
-                      }} 
-                      className="h-8 w-8 text-red-600 hover:text-red-800 hover:bg-red-50"
-                    >
+                    <Button variant="ghost" size="icon" onClick={e => {
+                  e.stopPropagation();
+                  handleAction("delete", member);
+                }} className="h-8 w-8 text-red-600 hover:text-red-800 hover:bg-red-50">
                       <Trash2 size={18} />
                     </Button>
                   </div>
                 </TableCell>
-              </TableRow>
-            ))}
+              </TableRow>)}
           </TableBody>
-          <TableCaption>
-            Lista de sócios da associação
-          </TableCaption>
+          
         </Table>
       </div>
       
@@ -209,54 +177,22 @@ export function MemberTable({
             Página {currentPage} de {totalPages}
           </div>
           <div className="flex space-x-1">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-8 w-8" 
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
+            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
               <ChevronLeft size={16} />
             </Button>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-8 w-8" 
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
+            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
               <ChevronRight size={16} />
             </Button>
           </div>
         </div>
       </div>
       
-      {selectedMember && (
-        <MemberModal 
-          member={selectedMember} 
-          isOpen={!!selectedMember} 
-          onClose={() => setSelectedMember(null)} 
-          onAction={handleAction} 
-        />
-      )}
+      {selectedMember && <MemberModal member={selectedMember} isOpen={!!selectedMember} onClose={() => setSelectedMember(null)} onAction={handleAction} />}
 
-      <DocumentSelectionDialog 
-        isOpen={showDocumentSelection} 
-        onClose={() => setShowDocumentSelection(false)} 
-        onSelectDocument={handleSelectDocument} 
-      />
+      <DocumentSelectionDialog isOpen={showDocumentSelection} onClose={() => setShowDocumentSelection(false)} onSelectDocument={handleSelectDocument} />
 
-      <INSSRequestDialog 
-        isOpen={showINSSRequest} 
-        onClose={() => setShowINSSRequest(false)} 
-        memberId={activeMember?.id} 
-      />
+      <INSSRequestDialog isOpen={showINSSRequest} onClose={() => setShowINSSRequest(false)} memberId={activeMember?.id} />
 
-      <RepresentationTermDialog 
-        isOpen={showRepresentationTerm} 
-        onClose={() => setShowRepresentationTerm(false)} 
-        memberId={activeMember?.id} 
-      />
-    </div>
-  );
+      <RepresentationTermDialog isOpen={showRepresentationTerm} onClose={() => setShowRepresentationTerm(false)} memberId={activeMember?.id} />
+    </div>;
 }
